@@ -1,8 +1,10 @@
-package model;
+package model.structures;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import model.structures.Queue;
 
 class QueueTest {
 	
@@ -22,6 +24,18 @@ class QueueTest {
 		assertTrue(queue.dequeue().equals(e1)); //First to be added is first to be dequeued
 		assertTrue(queue.dequeue().equals(e2));
 		assertTrue(queue.dequeue().equals(e3)); //Last to be added is first to be dequeued
+	}
+	
+	@Test
+	void testPeek() {
+		setupEmptyQueue();
+		String e1 = "food", e2 = "apple";
+		queue.enqueue(e1);
+		queue.enqueue(e2);
+		
+		assertTrue(queue.peek().equals(e1));
+		assertTrue(queue.dequeue().equals(e1));
+		assertTrue(queue.peek().equals(e2));
 	}
 	
 	@Test

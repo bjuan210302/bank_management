@@ -1,8 +1,8 @@
-package model;
+package model.structures;
 
 import java.util.LinkedList;
 
-public class Queue<T> {
+public class Queue<T> implements QueueInterface<T>{
 	
 	private LinkedList<T> elements;
 	
@@ -16,6 +16,10 @@ public class Queue<T> {
 	
 	public T dequeue() {
 		return elements.removeLast();
+	}
+	
+	public T peek() {
+		return elements.getLast();
 	}
 	
 	public boolean isEmpty() {
