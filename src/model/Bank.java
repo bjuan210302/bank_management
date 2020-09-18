@@ -24,22 +24,21 @@ public class Bank {
 	}
 	
 	public void registerClient(String name, String id, int accountBalance, int cardBalance, Date cardPaymentDate,
-			Date registrationDate) {
-		Client client = new Client(name, id, accountBalance, cardBalance, cardPaymentDate, registrationDate);
-		databaseClients.add(client);
-	}
-	
-	public void registerClient(String name, String id, int accountBalance, int cardBalance, Date cardPaymentDate,
-			Date registrationDate, int priority) {
-		Client client = new Client(name, id, accountBalance, cardBalance, cardPaymentDate, registrationDate);
-		client.setPriority(priority);
+			Date registrationDate, int[] specialAttentionPoints) {
+		
+		int priority = 0;
+		for(int i = 0; i < specialAttentionPoints.length; i++) {
+			priority += specialAttentionPoints[i];
+		}
+		
+		Client client = new Client(name, id, accountBalance, cardBalance, cardPaymentDate, registrationDate, priority);
 		databaseClients.add(client);
 	}
 
 	public Client searchClient(Client client) {
 		Client foundClient = null;
 		
-		//This is O(n)
+		//This is O(n) at worst
 		for(Client clientInDatabase: databaseClients) {
 			if(clientInDatabase.equals(client)) {
 				foundClient = clientInDatabase;
@@ -51,12 +50,31 @@ public class Bank {
 	}
 	
 	public void enqueueClient(Client client) {
-		queueClients.enqueue(client);
-	}
-
-	public void enqueueSpecialAttentioClient(Client client) {
-		queueSpecialAttention.enqueue(client);
+		
+		if(client.getPriority() > 0) {
+			queueSpecialAttention.enqueue(client);
+		}else {
+			queueClients.enqueue(client);
+		}
+		
 	}
 	
 	
+	// CLIENTS FUNCTIONS
+	
+	public void depositOrWithdraw(Client client, int amount) {
+		client.depositOrWithDraw(amount);
+	}
+	
+	public void payCard(Client client, int amountToPay, boolean payWithAccountMoney) {
+		
+	}
+	
+	public void removeAccount(Client client) {
+		
+	}
+	
+	public void undoLastAction(Client client) {
+		
+	}
 }

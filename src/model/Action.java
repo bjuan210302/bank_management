@@ -11,12 +11,19 @@ public class Action {
 	private int accountBalance;
 	private int cardBalance;
 	
-	public Action(ActionTag actionTag, Date actionDate, int accountBalance, int cardBalance) {
+	public Action(Client performer, ActionTag actionTag, Date actionDate) {
 		this.actionTag = actionTag;
 		this.actionDate = actionDate;
-		this.accountBalance = accountBalance;
-		this.cardBalance = cardBalance;
+		this.accountBalance = performer.getAccountBalance();
+		this.cardBalance = performer.getCardBalance();
 	}
 	
+	public void undo() {
+		//TODO: implement this shit
+	}
+	
+	public void setActionTag(ActionTag actionTag) {
+		this.actionTag = actionTag;
+	}
 	
 }

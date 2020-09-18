@@ -1,6 +1,7 @@
 package model.structures;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class Stack<T> {
 
@@ -14,7 +15,7 @@ private LinkedList<T> elements;
 		elements.add(element);
 	}
 	
-	public T pop() {
+	public T pop() throws NoSuchElementException{
 		return elements.removeLast();
 	}
 	
