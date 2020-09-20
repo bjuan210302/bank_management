@@ -2,10 +2,12 @@ package model;
 
 import java.util.Date;
 
-public class Account {
+import model.structures.Hashable;
+
+public class Account {  
 	
 	private Client owner;
-	private long accountId;
+	private BankAccountKey accountKey;
 	private int accountBalance;
 	private int cardBalance;
 	private Date cardPaymentDate;
@@ -16,7 +18,7 @@ public class Account {
 		
 	public Account(Client owner, long accountId) {
 		this.owner = owner;
-		this.accountId = accountId;
+		this.accountKey = new BankAccountKey(accountId);
 		this.accountBalance = 0;
 		this.cardBalance = 0;
 		//TODO: set cardPaymentDate
@@ -77,8 +79,11 @@ public class Account {
 		return new Action(owner, this, actionTag, null); // TODO: DATE = null
 	}
 	
-	public boolean idIsEquals(long accountId) {
-		return this.accountId == accountId;
+	public boolean equals(Account otherAccount) {
+		return this.accountKey.equals(otherAccount.accountKey);
+	}
+	public boolean equals(long otherAccountId) {
+		return this.accountKey.equals(otherAccountId);
 	}
 	
 	//GET SET

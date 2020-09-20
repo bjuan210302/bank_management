@@ -14,8 +14,6 @@ public class Bank {
 	private Queue<Client> queueClients;
 	private PriorityQueue<Client> queueSpecialAttention;
 	
-	private Stack<Action> clientActions;
-	
 	public Bank() {
 		formerBankAccounts = new ArrayList<Account>();
 		databaseClients = new ArrayList<Client>();
@@ -23,15 +21,14 @@ public class Bank {
 		queueSpecialAttention = new PriorityQueue<Client>();
 	}
 	
-	public void registerClient(String name, String id, int accountBalance, int cardBalance, Date cardPaymentDate,
-			Date registrationDate, int[] specialAttentionPoints) {
+	public void registerClient(String name, String id, Date registrationDate, int[] specialAttentionPoints) {
 		
 		int priority = 0;
 		for(int i = 0; i < specialAttentionPoints.length; i++) {
 			priority += specialAttentionPoints[i];
 		}
 		
-		Client client = new Client(name, id, accountBalance, cardBalance, cardPaymentDate, registrationDate, priority);
+		Client client = new Client(name, id, registrationDate, priority);
 		databaseClients.add(client);
 	}
 
