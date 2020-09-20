@@ -9,7 +9,7 @@ import model.structures.Stack;
 
 public class Bank {
 
-	private ArrayList<Client> formerClients;
+	private ArrayList<Account> formerBankAccounts;
 	private ArrayList<Client> databaseClients;
 	private Queue<Client> queueClients;
 	private PriorityQueue<Client> queueSpecialAttention;
@@ -17,7 +17,7 @@ public class Bank {
 	private Stack<Action> clientActions;
 	
 	public Bank() {
-		formerClients = new ArrayList<Client>();
+		formerBankAccounts = new ArrayList<Account>();
 		databaseClients = new ArrayList<Client>();
 		queueClients = new Queue<Client>();
 		queueSpecialAttention = new PriorityQueue<Client>();
@@ -62,19 +62,24 @@ public class Bank {
 	
 	// CLIENTS FUNCTIONS
 	
-	public void depositOrWithdraw(Client client, int amount) {
-		client.depositOrWithDraw(amount);
+	public void depositOrWithdraw(Client client, long bankAccountId, int amount) {
+		client.depositOrWithdraw(amount, bankAccountId);
 	}
 	
-	public void payCard(Client client, int amountToPay, boolean payWithAccountMoney) {
-		
+	public void payCard(Client client, long bankAccountId, int amountToPay, boolean payWithAccountMoney) {
+		client.payCard(bankAccountId, amountToPay, payWithAccountMoney);
 	}
 	
-	public void removeAccount(Client client) {
-		
+	public void removeAccount(Client client, long bankAccountId, String cancelReason, Date cancelDate) {
+		Account removedBankAccount = client.removeBankAccount(bankAccountId, cancelReason, cancelDate);
+		formerBankAccounts.add(removedBankAccount);
 	}
 	
 	public void undoLastAction(Client client) {
-		
+		Action action = client.undoLastAction();
+		action.undo();
+		if(action.getTag().equals(ActionTag.TAG_REMOVE_ACC)) {
+			client.addBankAccount(action.getBankAccount());
+		}
 	}
 }

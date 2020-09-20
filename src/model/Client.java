@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -9,71 +10,69 @@ public class Client {
 
 	private String name;
 	private String id;
-	private int accountBalance;
-	private int cardBalance;
-	private Date cardPaymentDate;
 	private Date registrationDate;
 	private Stack<Action> clientActions;
-	
-	//In case the client has special attention
+	private ArrayList<Account> bankAccounts;
 	private int priority;
-	
-	//In case the client cancel their account
-	private String cancelReason;
-	private Date cancelDate;
 	
 	public Client(String name, String id, int accountBalance, int cardBalance, Date cardPaymentDate,
 			Date registrationDate, int priority) {
 		super();
 		this.name = name;
 		this.id = id;
-		this.accountBalance = accountBalance;
-		this.cardBalance = cardBalance;
-		this.cardPaymentDate = cardPaymentDate;
 		this.registrationDate = registrationDate;
 		this.priority = priority;
-	}
-	
-	public void depositOrWithDraw(int amount) {
-		if(accountBalance + amount == 0) {
-			//TODO: throw NotEnoughMoney exception
-		}
 		
-		accountBalance += amount;
-		
-		Action action = createAction();
-		action.setActionTag(ActionTag.TAG_DEPOSIT_OR_WITHDRAW);
-		addAction(action);
+		this.clientActions = new Stack<Action>();
+		this.bankAccounts = new ArrayList<Account>();
 	}
 	
-	private Action createAction() {
-		return new Action(this, null, null); // TODO: DATE = null
+	// CLIENTS FUNCTIONS
+	public void depositOrWithdraw(int amount, long bankAccountId) {
+		Account bankAccount = getBankAccount(bankAccountId);
+		bankAccount.depositOrWithdraw(amount, bankAccountId);
 	}
 	
-	private void addAction(Action action) {
+	public void payCard(long bankAccountId, int amountTopay, boolean payWithAccountMoney) {
+		Account bankAccount = getBankAccount(bankAccountId);
+		bankAccount.payCard(amountTopay, payWithAccountMoney);
+	}
+	
+	public Account removeBankAccount(long bankAccountId, String cancelReason, Date cancelDate) {
+		Account bankAccount = getBankAccount(bankAccountId);
+		bankAccount.removeAccount(cancelReason, cancelDate);
+		bankAccounts.remove(bankAccount);
+		return bankAccount;
+	}
+	
+	public Action undoLastAction() throws NoSuchElementException{
+		return clientActions.pop();
+	}
+	//AUX FUNCTIONS
+	public void addAction(Action action) {
 		clientActions.push(action);
 	}
 	
-	public void undoLastAction() throws NoSuchElementException{
-		clientActions.pop().undo();
+	public void addBankAccount(Account bankAccount) {
+		
+	}
+	public Account getBankAccount(long bankAccountId) {
+		Account aux = null;
+		
+		for(Account account: bankAccounts) {
+			if(account.idIsEquals(bankAccountId)) {
+				aux = account;
+				break;
+			}
+		}
+		
+		if(aux == null) {} //TODO: Throw UnexistingBankAccountException
+		
+		return aux;
 	}
 	
 	//GET SET EQUALS
 	
-	public int getAccountBalance() {
-		return accountBalance;
-	}
-	public void setAccountBalance(int accountBalance) {
-		this.accountBalance = accountBalance;
-	}
-
-	public int getCardBalance() {
-		return cardBalance;
-	}
-	public void setCardBalance(int cardBalance) {
-		this.cardBalance = cardBalance;
-	}
-
 	public int getPriority() {
 		return priority;
 	}
