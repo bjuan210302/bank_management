@@ -1,20 +1,20 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Action {
 	
 	private ActionTag actionTag;
-	private Date actionDate; //Date this action was performed
+	private LocalDate actionDate; //Date this action was performed
 	private Account bankAccount;
 	private Client performer;
 	
 	//Values PRE action, like a backup
 	private int accountBalance;
 	private int cardBalance;
-	private Date cardPaymentDate;
+	private LocalDate cardPaymentDate;
 	
-	public Action(Client performer, Account bankAccount, ActionTag actionTag, Date actionDate) {
+	public Action(Client performer, Account bankAccount, ActionTag actionTag, LocalDate actionDate) {
 		this.performer = performer;
 		this.bankAccount = bankAccount;
 		this.actionTag = actionTag;
