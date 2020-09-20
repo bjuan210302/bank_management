@@ -57,10 +57,6 @@ public class HashTable<K extends Hashable, V> {
 	}
 	
 	public V remove(K key) {
-		if(isEmpty()) {
-			//TODO: throw NotFoundException
-		}
-		
 		V removed = null;
 		boolean allSpotsChecked = false;
 		ArrayList<Integer> visitedIndex = new ArrayList<Integer>();
@@ -140,4 +136,14 @@ public class HashTable<K extends Hashable, V> {
 		return size;
 	}
 	
+	public int count() {
+		int counter = 0;
+		for(int i = 0; i < size; i++) {
+			if(bucket[i] != null) {
+				counter++;
+			}
+		}
+		
+		return counter;
+	}
 }

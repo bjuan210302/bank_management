@@ -1,14 +1,19 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
+import model.exceptions.DebtRelatedException;
+import model.exceptions.NotEnoughMoneyException;
+import model.exceptions.NotEnoughSpaceException;
 import model.structures.HashTable;
 import model.structures.Stack;
 
 public class Client {
 
 	public static final int MAX_NUMBER_ACCOUNTS = 7; // Would a client need more than 7 bank accounts?
+	
 	private String name;
 	private String id;
 	private Date registrationDate;
@@ -28,17 +33,17 @@ public class Client {
 	}
 	
 	// CLIENTS FUNCTIONS
-	public void depositOrWithdraw(int amount, long bankAccountId) {
+	public void depositOrWithdraw(int amount, long bankAccountId) throws NotEnoughMoneyException {
 		Account bankAccount = getBankAccount(bankAccountId);
-		bankAccount.depositOrWithdraw(amount, bankAccountId);
+		bankAccount.depositOrWithdraw(amount);
 	}
 	
-	public void payCard(long bankAccountId, int amountTopay, boolean payWithAccountMoney) {
+	public void payCard(long bankAccountId, int amountTopay, boolean payWithAccountMoney) throws NotEnoughMoneyException, DebtRelatedException {
 		Account bankAccount = getBankAccount(bankAccountId);
 		bankAccount.payCard(amountTopay, payWithAccountMoney);
 	}
 	
-	public Account removeBankAccount(long bankAccountId, String cancelReason, Date cancelDate) {
+	public Account removeBankAccount(long bankAccountId, String cancelReason, LocalDate cancelDate) throws DebtRelatedException {
 		Account bankAccount = getBankAccount(bankAccountId);
 		bankAccount.removeAccount(cancelReason, cancelDate);
 		bankAccounts.remove(new BankAccountKey(bankAccountId));
@@ -53,11 +58,36 @@ public class Client {
 		clientActions.push(action);
 	}
 	
-	public void addBankAccount(Account bankAccount) {
+	public long addBankAccount() throws NotEnoughSpaceException {
+		if(bankAccounts.isFull()) {
+			throw new NotEnoughSpaceException(MAX_NUMBER_ACCOUNTS, bankAccounts.count());
+		}
 		
+		long accountId = Bank.BANK_ACOUNT_ID_GENERATOR.nextLong();
+		BankAccountKey bankAccountKey = new BankAccountKey(accountId);
+		Account account = new Account(this, bankAccountKey);
+		
+		bankAccounts.add(bankAccountKey, account);
+		
+		return accountId;
 	}
+	public long addBankAccount(Account bankAccount) throws NotEnoughSpaceException {
+		if(bankAccounts.isFull()) {
+			throw new NotEnoughSpaceException(MAX_NUMBER_ACCOUNTS, bankAccounts.count());
+		}
+		
+		BankAccountKey bankAccountKey = bankAccount.getAccountKey();
+		bankAccounts.add(bankAccountKey, bankAccount);
+		
+		return bankAccountKey.getAccountId();
+	}
+	
 	public Account getBankAccount(long bankAccountId) {
 		return bankAccounts.getValueOf(new BankAccountKey(bankAccountId));
+	}
+	
+	public int numberOfBankAccounts() {
+		return bankAccounts.count();
 	}
 	
 	//GET SET EQUALS

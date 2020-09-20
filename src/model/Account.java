@@ -1,8 +1,9 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-import model.structures.Hashable;
+import model.exceptions.DebtRelatedException;
+import model.exceptions.NotEnoughMoneyException;
 
 public class Account {  
 	
@@ -10,24 +11,26 @@ public class Account {
 	private BankAccountKey accountKey;
 	private int accountBalance;
 	private int cardBalance;
-	private Date cardPaymentDate;
+	private LocalDate cardPaymentDate;
 	
 	//In case the client cancel the account
 	private String cancelReason;
-	private Date cancelDate;
+	private LocalDate cancelDate;
 		
-	public Account(Client owner, long accountId) {
+	public Account(Client owner, BankAccountKey accountKey) {
 		this.owner = owner;
-		this.accountKey = new BankAccountKey(accountId);
+		this.accountKey = accountKey;
 		this.accountBalance = 0;
 		this.cardBalance = 0;
-		//TODO: set cardPaymentDate
+		this.cardPaymentDate = LocalDate.now();
+		this.cardPaymentDate.plusMonths(1); //Pay the card a month after creating the account
+		
 	}
 	
 	//CLIENT FUNCTIONS
-	public void depositOrWithdraw(int amount, long accountId) {
+	public void depositOrWithdraw(int amount) throws NotEnoughMoneyException {
 		if(accountBalance + amount < 0) {
-			//TODO: throw NotEnoughMoney exception
+			throw new NotEnoughMoneyException(getAccountId(), accountBalance, amount, accountBalance-amount);
 		}
 		
 		Action action = createAction(ActionTag.TAG_DEPOSIT_OR_WITHDRAW);
@@ -36,14 +39,14 @@ public class Account {
 		accountBalance += amount;
 	}
 	
-	public void payCard(int amountTopay, boolean payWithAccountMoney) {
+	public void payCard(int amountTopay, boolean payWithAccountMoney) throws NotEnoughMoneyException, DebtRelatedException {
 		if(cardBalance >= 0) {
-			//TODO: throw DebtRelatedException
+			throw new DebtRelatedException(getAccountId(), cardBalance);
 		}
 		
 		if(payWithAccountMoney) {
 			if(accountBalance - amountTopay < 0) {
-				//TODO: throw NotEnoughMoney exception
+				throw new NotEnoughMoneyException(getAccountId(), accountBalance, amountTopay, accountBalance-amountTopay);
 			}
 
 			Action action = createAction(ActionTag.TAG_CARDPAYMENT);
@@ -51,7 +54,7 @@ public class Account {
 			
 			accountBalance -= amountTopay;
 			cardBalance = 0;
-			//Modify cardPaymentDate
+			cardPaymentDate.plusMonths(1); //The card payment is due to a month after the last payment
 		}else {
 			Action action = createAction(ActionTag.TAG_CARDPAYMENT);
 			owner.addAction(action);
@@ -60,9 +63,9 @@ public class Account {
 		}
 	}
 	
-	public void removeAccount(String cancelReason, Date cancelDate) {
+	public void removeAccount(String cancelReason, LocalDate cancelDate) throws DebtRelatedException {
 		if(cardBalance < 0) {
-			//TODO: throw DebtRelatedException
+			throw new DebtRelatedException(getAccountId(), cardBalance);
 		}
 		
 		this.cancelReason = cancelReason;
@@ -76,7 +79,7 @@ public class Account {
 	
 	//AUX FUNCTIONS
 	private Action createAction(ActionTag actionTag) {
-		return new Action(owner, this, actionTag, null); // TODO: DATE = null
+		return new Action(owner, this, actionTag, LocalDate.now());
 	}
 	
 	public boolean equals(Account otherAccount) {
@@ -101,10 +104,16 @@ public class Account {
 		this.cardBalance = cardBalance;
 	}
 
-	public Date getCardPaymentDate() {
+	public BankAccountKey getAccountKey() {
+		return accountKey;
+	}
+	public long getAccountId() {
+		return accountKey.getAccountId();
+	}
+	public LocalDate getCardPaymentDate() {
 		return cardPaymentDate;
 	}
-	public void setCardPaymentDate(Date cardPaymentDate) {
+	public void setCardPaymentDate(LocalDate cardPaymentDate) {
 		this.cardPaymentDate = cardPaymentDate;
 	}
 
@@ -115,10 +124,10 @@ public class Account {
 		this.cancelReason = cancelReason;
 	}
 
-	public Date getCancelDate() {
+	public LocalDate getCancelDate() {
 		return cancelDate;
 	}
-	public void setCancelDate(Date cancelDate) {
+	public void setCancelDate(LocalDate cancelDate) {
 		this.cancelDate = cancelDate;
 	}
 
