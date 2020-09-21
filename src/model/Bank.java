@@ -1,8 +1,8 @@
 package model;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 import model.exceptions.DebtRelatedException;
@@ -10,6 +10,7 @@ import model.exceptions.NotEnoughMoneyException;
 import model.exceptions.NotEnoughSpaceException;
 import model.structures.PriorityQueue;
 import model.structures.Queue;
+import model.util.LoadClientsFromFile;
 
 public class Bank {
 
@@ -27,14 +28,14 @@ public class Bank {
 		queueSpecialAttention = new PriorityQueue<Client>();
 	}
 	
-	public void registerClient(String name, String id, Date registrationDate, int[] specialAttentionPoints) {
+	public void registerClient(String name, String id, int[] specialAttentionPoints) {
 		
 		int priority = 0;
 		for(int i = 0; i < specialAttentionPoints.length; i++) {
 			priority += specialAttentionPoints[i];
 		}
 		
-		Client client = new Client(name, id, registrationDate, priority);
+		Client client = new Client(name, id, LocalDate.now(), priority);
 		databaseClients.add(client);
 	}
 
@@ -91,5 +92,20 @@ public class Bank {
 	}
 	public int numberOfBankAccounts(Client client) {
 		return client.numberOfBankAccounts();
+	}
+	
+	//GET SET
+	
+	public ArrayList<Client> getDatabase(){
+		return databaseClients;
+	}
+	//TEST ONLY FUNCTIONS
+	public void loadUsers() {
+		try {
+			LoadClientsFromFile.loadUsersTo(databaseClients);
+		} catch (IOException e) {
+			System.out.println("EXCEPTION FROM LOADUSERS() in Bank.java");
+			System.out.println(e.getMessage());
+		}
 	}
 }

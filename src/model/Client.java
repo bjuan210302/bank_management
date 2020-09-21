@@ -1,7 +1,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.NoSuchElementException;
 
 import model.exceptions.DebtRelatedException;
@@ -16,12 +15,12 @@ public class Client {
 	
 	private String name;
 	private String id;
-	private Date registrationDate;
+	private LocalDate registrationDate;
 	private Stack<Action> clientActions;
 	private HashTable<BankAccountKey, Account> bankAccounts;
 	private int priority;
 	
-	public Client(String name, String id, Date registrationDate, int priority) {
+	public Client(String name, String id, LocalDate registrationDate, int priority) {
 		super();
 		this.name = name;
 		this.id = id;
@@ -101,5 +100,11 @@ public class Client {
 	
 	public boolean equals(Client otherClient) {
 		return this.id.equals(otherClient.id);
+	}
+	
+	//TEST ONLY FUNCTIONS
+	
+	public String toString() {
+		return "n: " + name + " | d:"  + registrationDate + " | p:" + priority + "\n";
 	}
 }

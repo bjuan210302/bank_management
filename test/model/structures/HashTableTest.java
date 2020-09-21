@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import model.structures.HashTable;
+import model.structures.Hashable;
+
 
 class HashTableTest {
 
