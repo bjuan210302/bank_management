@@ -63,7 +63,6 @@ public class PrincipalController {
     
     public void whenInitializing() {
     	regPane = new RegistrationPaneController(bank);
-    	System.out.println("lorena");
     	
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("registerPane.fxml"));
 		fxmlLoader.setController(regPane);

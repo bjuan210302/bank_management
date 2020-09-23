@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import model.*;
+import ui.notifications.Notification;
 
 public class RegistrationPaneController {
 	
@@ -36,8 +37,36 @@ public class RegistrationPaneController {
     private Button registerButton;
 
     @FXML
-    void registerButtonAct(ActionEvent event) {
-    	System.out.println("hi");
+    public void registerButtonAct(ActionEvent event) {
+    	String name = nameField.getText();
+    	String id = idField.getText();
+    	int[] priority =  new int[3];
+    	if(pregnantCB.isSelected()) {
+    		priority[0] = 1;
+    	}
+    	if(thirdAgeCB.isSelected()) {
+    		priority[1] = 1;
+    	}
+    	if(disabilityCB.isSelected()) {
+    		priority[2] = 1;
+    	}
+
+    	if(name.isEmpty() || id.isEmpty() ) {
+    		new Notification("Something went wrong!", "The name field and Id fill must be completed", Notification.ERROR).show();
+    	}
+
+    	else {
+
+    		bank.registerClient(name, id, priority);
+    		nameField.setText("");
+    		idField.setText("");
+    		pregnantCB.setSelected(false);
+    		thirdAgeCB.setSelected(false);
+    		disabilityCB.setSelected(false);
+    		new Notification("The user was added!", "The user was successfuly added.", Notification.SUCCESS).show();
+
+    	}
+
 
     }
 
