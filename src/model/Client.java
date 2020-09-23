@@ -20,6 +20,18 @@ public class Client {
 	private HashTable<BankAccountKey, Account> bankAccounts;
 	private int priority;
 	
+	public String getName() {
+		return name;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public LocalDate getRegistrationDate() {
+		return registrationDate;
+	}
+
 	public Client(String name, String id, LocalDate registrationDate, int priority) {
 		super();
 		this.name = name;

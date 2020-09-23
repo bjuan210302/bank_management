@@ -4,15 +4,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView layoutX="23.0" layoutY="14.0" prefHeight="571.0" prefWidth="687.0">
+      <TableView fx:id="tableDB" layoutX="23.0" layoutY="14.0" prefHeight="571.0" prefWidth="687.0">
         <columns>
-          <TableColumn prefWidth="142.0" text="Name" />
-          <TableColumn prefWidth="165.0" text="ID" />
-            <TableColumn prefWidth="219.0" text="Time of vinculation" />
-            <TableColumn prefWidth="160.0" text="Money" />
+          <TableColumn fx:id="nameColumn" prefWidth="142.0" text="Name" />
+          <TableColumn fx:id="idColumn" prefWidth="165.0" text="ID" />
+            <TableColumn fx:id="timeColumn" prefWidth="219.0" text="Time of vinculation" />
+            <TableColumn fx:id="moneyColumn" prefWidth="160.0" text="Money" />
         </columns>
       </TableView>
    </children>

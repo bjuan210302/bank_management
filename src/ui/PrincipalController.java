@@ -38,6 +38,7 @@ public class PrincipalController {
     
     public PrincipalController() {
 		this.bank = new Bank();
+		
 	}
 
     @FXML
@@ -45,6 +46,8 @@ public class PrincipalController {
     	
 		paneChange.getChildren().clear();
 		paneChange.getChildren().add(secondPane);
+		dbController.initializeTV();
+		
 
     }
 
@@ -63,6 +66,8 @@ public class PrincipalController {
     
     public void whenInitializing() {
     	regPane = new RegistrationPaneController(bank);
+		dbController = new DataBasePaneController(bank);
+		//bank.loadUsers();
     	
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("registerPane.fxml"));
 		fxmlLoader.setController(regPane);
@@ -84,5 +89,7 @@ public class PrincipalController {
 
     	
     }
+    
+  
 
 }
