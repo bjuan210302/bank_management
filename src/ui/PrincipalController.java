@@ -17,6 +17,8 @@ public class PrincipalController {
 	private RegistrationPaneController regPane;
 	
 	private DataBasePaneController dbController;
+	
+	private SearchPaneController searchController;
 
     @FXML
     private JFXButton registerButton;
@@ -26,6 +28,9 @@ public class PrincipalController {
 
     @FXML
     private JFXButton dbButton;
+    
+    @FXML
+    private JFXButton searchButton;
 
     @FXML
     private Pane paneChange;
@@ -35,6 +40,9 @@ public class PrincipalController {
     
     @FXML
     private Pane secondPane;
+    
+    @FXML
+    private Pane fourthPane;
     
     public PrincipalController() {
 		this.bank = new Bank();
@@ -64,10 +72,19 @@ public class PrincipalController {
 
     }
     
+    @FXML
+    public void searchButtonAct(ActionEvent event) {
+    	paneChange.getChildren().clear();
+    	paneChange.getChildren().add(fourthPane);
+    	searchController.initialize();
+
+    }
+    
     public void whenInitializing() {
     	regPane = new RegistrationPaneController(bank);
 		dbController = new DataBasePaneController(bank);
-		//bank.loadUsers();
+		searchController = new SearchPaneController(bank);
+		bank.loadUsers();
     	
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("registerPane.fxml"));
 		fxmlLoader.setController(regPane);
@@ -83,6 +100,14 @@ public class PrincipalController {
 		fxmlLoader.setController(dbController);
 		try {
 			secondPane = fxmlLoader.load();
+		} catch (IOException e) {
+			
+		}
+		
+		 fxmlLoader = new FXMLLoader(getClass().getResource("searchPane.fxml"));
+		fxmlLoader.setController(searchController);
+		try {
+			fourthPane = fxmlLoader.load();
 		} catch (IOException e) {
 			
 		}

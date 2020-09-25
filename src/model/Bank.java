@@ -38,6 +38,20 @@ public class Bank {
 		Client client = new Client(name, id, LocalDate.now(), priority);
 		databaseClients.add(client);
 	}
+	
+	public Client searchClient(String id) {
+		Client foundClient = null;
+
+		//This is O(n) at worst
+		for(Client clientInDatabase: databaseClients) {
+			if(clientInDatabase.getId().equals(id)) {
+				foundClient = clientInDatabase;
+				break;
+			}
+		}
+		
+		return foundClient;
+	}
 
 	public Client searchClient(Client client) {
 		Client foundClient = null;
