@@ -14,7 +14,7 @@
    <children>
       <Label layoutX="65.0" layoutY="45.0" text="Name:" />
       <Label layoutX="65.0" layoutY="80.0" text="ID:" />
-      <ChoiceBox layoutX="65.0" layoutY="113.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="accountChoice" layoutX="65.0" layoutY="113.0" prefWidth="150.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="382.0" layoutX="65.0" layoutY="174.0" stroke="BLACK" strokeType="INSIDE" width="604.0" />
       <Label layoutX="380.0" layoutY="45.0" text="Account ID:" />
       <Label layoutX="380.0" layoutY="80.0" text="Account Balance:" />
@@ -22,28 +22,53 @@
       <Line endX="129.0" layoutX="238.0" layoutY="289.0" rotate="90.0" startX="-100.0" />
       <Line endX="129.0" layoutX="442.0" layoutY="289.0" rotate="90.0" startX="-100.0" />
       <Line endX="510.0" layoutX="159.0" layoutY="404.0" startX="-94.0" />
-      <TextField layoutX="89.0" layoutY="228.0" prefHeight="31.0" prefWidth="132.0" />
-      <JFXButton layoutX="118.0" layoutY="305.0" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Send" />
+      <TextField fx:id="moneyBox" layoutX="89.0" layoutY="228.0" prefHeight="31.0" prefWidth="132.0" />
+      <JFXButton fx:id="moneyButton" layoutX="118.0" layoutY="305.0" onAction="#moneyButAct" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Send" />
       <Label layoutX="68.0" layoutY="383.0" text="Note: enter a negative value to withdraw">
          <font>
             <Font name="System Bold Italic" size="9.0" />
          </font>
       </Label>
-      <TextField layoutX="293.0" layoutY="199.0" prefHeight="31.0" prefWidth="132.0" />
-      <CheckBox layoutX="293.0" layoutY="248.0" mnemonicParsing="false" text="Pay with account $" />
-      <JFXButton layoutX="325.0" layoutY="305.0" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Send" />
-      <JFXButton layoutX="493.0" layoutY="229.0" prefHeight="105.0" prefWidth="132.0" style="-fx-background-color: #e8204b;" text="Cancel Account">
+      <TextField fx:id="payCardBox" layoutX="293.0" layoutY="199.0" prefHeight="31.0" prefWidth="132.0" />
+      <CheckBox fx:id="payWithAccCheck" layoutX="293.0" layoutY="248.0" mnemonicParsing="false" text="Pay with account $" />
+      <JFXButton fx:id="payCardButton" layoutX="325.0" layoutY="305.0" onAction="#payCardButAct" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Send" />
+      <JFXButton fx:id="cancelAccButton" layoutX="493.0" layoutY="229.0" onAction="#cancelAccAct" prefHeight="105.0" prefWidth="132.0" style="-fx-background-color: #e8204b;" text="Cancel Account">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXButton>
-      <JFXButton layoutX="92.0" layoutY="495.0" prefHeight="47.0" prefWidth="125.0" style="-fx-background-color: #d5dce8;" text="Create Account" />
-      <JFXButton layoutX="241.0" layoutY="495.0" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Undo" />
+      <JFXButton fx:id="createAccButton" layoutX="92.0" layoutY="495.0" onAction="#createAccAct" prefHeight="47.0" prefWidth="125.0" style="-fx-background-color: #d5dce8;" text="Create Account" />
+      <JFXButton fx:id="undoButton" layoutX="241.0" layoutY="495.0" onAction="#undoAct" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Undo" />
       <JFXButton layoutX="335.0" layoutY="495.0" prefHeight="47.0" prefWidth="166.0" style="-fx-background-color: #e8204b;" text="Cancel all accounts">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXButton>
       <JFXButton fx:id="finishButton" layoutX="525.0" layoutY="495.0" onAction="#finishAction" prefHeight="47.0" prefWidth="125.0" style="-fx-background-color: #d5dce8;" text="Finish" />
+      <Label fx:id="nameField" layoutX="123.0" layoutY="45.0" prefHeight="21.0" prefWidth="199.0">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="idField" layoutX="122.0" layoutY="80.0" prefHeight="21.0" prefWidth="199.0">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="accIDField" layoutX="501.0" layoutY="45.0" prefHeight="21.0" prefWidth="199.0">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="accBalField" layoutX="501.0" layoutY="80.0" prefHeight="21.0" prefWidth="199.0">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="cardBalField" layoutX="501.0" layoutY="118.0" prefHeight="21.0" prefWidth="199.0">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

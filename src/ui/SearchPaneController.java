@@ -22,6 +22,8 @@ public class SearchPaneController {
 	
 	private Bank bank;
 	
+	private Client client = null;
+	
 	public SearchPaneController(Bank bank) {
 		this.bank = bank;
 	}
@@ -49,8 +51,14 @@ public class SearchPaneController {
 
     @FXML
     void attendAction(ActionEvent event) {
-    	AttendController attendController = new AttendController(bank);
+    	AttendController attendController = new AttendController(bank, client);
     	attendController.attendWindow();
+    	nameField.setText("");
+    	idField.setText("");
+    	numberField.setText("");
+    	dateField.setText("");
+    	searchField.setText("");
+    	attendButton.setDisable(true);
 
     }
 
@@ -58,12 +66,13 @@ public class SearchPaneController {
     void searchAction(ActionEvent event) {
     	try {
     		String id = searchField.getText();
-        	Client temp =bank.searchClient(id);
-        	nameField.setText(temp.getName());
-        	idField.setText(temp.getId());
-        	numberField.setText(String.valueOf(temp.numberOfBankAccounts()));
-        	dateField.setText(String.valueOf(temp.getRegistrationDate()));
+        	client =bank.searchClient(id);
+        	nameField.setText(client.getName());
+        	idField.setText(client.getId());
+        	numberField.setText(String.valueOf(client.numberOfBankAccounts()));
+        	dateField.setText(String.valueOf(client.getRegistrationDate()));
         	attendButton.setDisable(false);
+        	
     	}
     	catch (NullPointerException npe) {
     		new Notification("Something went wrong!", "The id is not registered", Notification.ERROR).show();
