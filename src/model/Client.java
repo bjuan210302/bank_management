@@ -15,14 +15,14 @@ public class Client implements HasPriority{
 	public static final int MAX_NUMBER_ACCOUNTS = 7; // Would a client need more than 7 bank accounts?
 	
 	private String name;
-	private String id;
+	private long id;
 	private LocalDate registrationDate;
 	private Stack<Action> clientActions;
 	private HashTable<EntityKey, Account> bankAccounts;
 	private int priority;
 	private EntityKey userKey;
 
-	public Client(String name, String id, LocalDate registrationDate, int priority) {
+	public Client(String name, long id, LocalDate registrationDate, int priority) {
 		super();
 		this.name = name;
 		this.id = id;
@@ -97,7 +97,7 @@ public class Client implements HasPriority{
 		return name;
 	}
 
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -116,7 +116,7 @@ public class Client implements HasPriority{
 		return userKey;
 	}
 	public boolean equals(Client otherClient) {
-		return this.id.equals(otherClient.id);
+		return this.id == otherClient.id;
 	}
 	
 	

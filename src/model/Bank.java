@@ -30,7 +30,7 @@ public class Bank {
 		queueSpecialAttention = new PriorityQueue<Client>();
 	}
 	
-	public void registerClient(String name, String id, int[] specialAttentionPoints) {
+	public void registerClient(String name, long id, int[] specialAttentionPoints) {
 		
 		int priority = 0;
 		for(int i = 0; i < specialAttentionPoints.length; i++) {
@@ -41,11 +41,8 @@ public class Bank {
 		databaseClients.add(client.getUserKey(), client);
 	}
 	
-	public Client searchClient(String id) {
-		Client foundClient = null;
-		long numericId = Long.valueOf(id);
-		databaseClients.getValueOf(new EntityKey(numericId));
-		return foundClient;
+	public Client searchClient(long id) {
+		return databaseClients.getValueOf(new EntityKey(id));
 	}
 	
 	public void enqueueClient(Client client) throws NotEnoughSpaceException {

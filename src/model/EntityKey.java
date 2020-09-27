@@ -20,10 +20,14 @@ public class EntityKey implements Hashable{
 		return value;
 	}
 	
-	public boolean equals(EntityKey key) {
-		return this.value == key.value;
+	public boolean equals(Object key) {
+		if(!(key instanceof EntityKey)) {
+			return false;
+		}
+		EntityKey key2 = (EntityKey) key;
+		return this.value == key2.value;
 	}
-	public boolean equals(long otherAccountId) {
-		return this.value == otherAccountId;
+	public String toString() {
+		return String.valueOf(value);
 	}
 }

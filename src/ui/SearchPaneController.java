@@ -66,7 +66,7 @@ public class SearchPaneController {
     void searchAction(ActionEvent event) {
     	try {
     		String id = searchField.getText();
-        	client =bank.searchClient(id);
+        	client = bank.searchClient(id);
         	nameField.setText(client.getName());
         	idField.setText(client.getId());
         	numberField.setText(String.valueOf(client.numberOfBankAccounts()));

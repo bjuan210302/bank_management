@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField fx:id="searchField" layoutX="271.0" layoutY="58.0" />
+      <Label layoutX="150.0" layoutY="58.0" prefHeight="31.0" prefWidth="96.0" text="Enter the ID:" />
+      <JFXButton fx:id="searchButton" layoutX="481.0" layoutY="53.0" onAction="#searchAction" text=" ">
+         <graphic>
+            <ImageView fitHeight="31.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/searchIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="396.0" layoutX="63.0" layoutY="144.0" stroke="BLACK" strokeType="INSIDE" width="603.0" />
+      <Label layoutX="342.0" layoutY="190.0" text="Name:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="342.0" layoutY="226.0" text="ID:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="342.0" layoutY="262.0" text="Number of accounts:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="342.0" layoutY="298.0" text="Date of vinculation:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="233.0" fitWidth="193.0" layoutX="98.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../assets/userIcon.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="nameField" layoutX="407.0" layoutY="193.0" prefHeight="26.0" prefWidth="225.0">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="idField" layoutX="407.0" layoutY="227.0" prefHeight="26.0" prefWidth="225.0">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="numberField" layoutX="520.0" layoutY="263.0" prefHeight="26.0" prefWidth="96.0">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="dateField" layoutX="504.0" layoutY="299.0" prefHeight="26.0" prefWidth="154.0">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="attendButton" layoutX="297.0" layoutY="433.0" onAction="#attendAction" prefHeight="56.0" prefWidth="142.0" style="-fx-background-color: #d5dce8;" text="Attend">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </JFXButton>
+   </children>
+</Pane>
