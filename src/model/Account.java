@@ -8,7 +8,7 @@ import model.exceptions.NotEnoughMoneyException;
 public class Account {  
 	
 	private Client owner;
-	private BankAccountKey accountKey;
+	private EntityKey accountKey;
 	private int accountBalance;
 	private int cardBalance;
 	private LocalDate cardPaymentDate;
@@ -17,7 +17,7 @@ public class Account {
 	private String cancelReason;
 	private LocalDate cancelDate;
 		
-	public Account(Client owner, BankAccountKey accountKey) {
+	public Account(Client owner, EntityKey accountKey) {
 		this.owner = owner;
 		this.accountKey = accountKey;
 		this.accountBalance = 0;
@@ -104,7 +104,7 @@ public class Account {
 		this.cardBalance = cardBalance;
 	}
 
-	public BankAccountKey getAccountKey() {
+	public EntityKey getAccountKey() {
 		return accountKey;
 	}
 	public long getAccountId() {

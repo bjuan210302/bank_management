@@ -2,6 +2,8 @@ package model.structures;
 
 import java.util.ArrayList;
 
+import model.Client;
+
 public class HashTable<K extends Hashable, V> {
 
 	class Node<K2, V2>{
@@ -146,5 +148,16 @@ public class HashTable<K extends Hashable, V> {
 		}
 		
 		return counter;
+	}
+	
+	public ArrayList<V> toArrayList(){
+		ArrayList<V> array = new ArrayList<V>(size);
+		for(Node<K, V> node: bucket) {
+			if(node != null) {
+				array.add(node.value);
+			}
+		}
+		
+		return array;
 	}
 }

@@ -8,6 +8,7 @@ import java.util.Random;
 import model.exceptions.DebtRelatedException;
 import model.exceptions.NotEnoughMoneyException;
 import model.exceptions.NotEnoughSpaceException;
+import model.structures.HashTable;
 import model.structures.PriorityQueue;
 import model.structures.Queue;
 import model.util.LoadClientsFromFile;
@@ -15,15 +16,16 @@ import model.util.LoadClientsFromFile;
 public class Bank {
 
 	public static final Random BANK_ACOUNT_ID_GENERATOR = new Random();
+	public static final int MAX_NUMBER_CLIENTS = 401; // Far from 2^8=256 and 2^9=512
 	
 	private ArrayList<Account> formerBankAccounts;
-	private ArrayList<Client> databaseClients;
+	private HashTable<EntityKey, Client> databaseClients;
 	private Queue<Client> queueClients;
 	private PriorityQueue<Client> queueSpecialAttention;
 	
 	public Bank() {
 		formerBankAccounts = new ArrayList<Account>();
-		databaseClients = new ArrayList<Client>();
+		databaseClients = new HashTable<EntityKey, Client>(MAX_NUMBER_CLIENTS);
 		queueClients = new Queue<Client>();
 		queueSpecialAttention = new PriorityQueue<Client>();
 	}
@@ -36,34 +38,13 @@ public class Bank {
 		}
 		
 		Client client = new Client(name, id, LocalDate.now(), priority);
-		databaseClients.add(client);
+		databaseClients.add(client.getUserKey(), client);
 	}
 	
 	public Client searchClient(String id) {
 		Client foundClient = null;
-
-		//This is O(n) at worst
-		for(Client clientInDatabase: databaseClients) {
-			if(clientInDatabase.getId().equals(id)) {
-				foundClient = clientInDatabase;
-				break;
-			}
-		}
-		
-		return foundClient;
-	}
-
-	public Client searchClient(Client client) {
-		Client foundClient = null;
-		
-		//This is O(n) at worst
-		for(Client clientInDatabase: databaseClients) {
-			if(clientInDatabase.equals(client)) {
-				foundClient = clientInDatabase;
-				break;
-			}
-		}
-		
+		long numericId = Long.valueOf(id);
+		databaseClients.getValueOf(new EntityKey(numericId));
 		return foundClient;
 	}
 	
@@ -111,7 +92,7 @@ public class Bank {
 	//GET SET
 	
 	public ArrayList<Client> getDatabase(){
-		return databaseClients;
+		return databaseClients.toArrayList();
 	}
 	//TEST ONLY FUNCTIONS
 	public void loadUsers() {

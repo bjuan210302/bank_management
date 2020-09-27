@@ -1,7 +1,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import model.exceptions.DebtRelatedException;
@@ -19,20 +18,9 @@ public class Client implements HasPriority{
 	private String id;
 	private LocalDate registrationDate;
 	private Stack<Action> clientActions;
-	private HashTable<BankAccountKey, Account> bankAccounts;
+	private HashTable<EntityKey, Account> bankAccounts;
 	private int priority;
-	
-	public String getName() {
-		return name;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public LocalDate getRegistrationDate() {
-		return registrationDate;
-	}
+	private EntityKey userKey;
 
 	public Client(String name, String id, LocalDate registrationDate, int priority) {
 		super();
@@ -42,7 +30,8 @@ public class Client implements HasPriority{
 		this.priority = priority;
 		
 		this.clientActions = new Stack<Action>();
-		this.bankAccounts = new HashTable<BankAccountKey, Account>(MAX_NUMBER_ACCOUNTS);
+		this.bankAccounts = new HashTable<EntityKey, Account>(MAX_NUMBER_ACCOUNTS);
+		userKey = new EntityKey(Long.valueOf(id));
 	}
 	
 	// CLIENTS FUNCTIONS
@@ -59,7 +48,7 @@ public class Client implements HasPriority{
 	public Account removeBankAccount(long bankAccountId, String cancelReason, LocalDate cancelDate) throws DebtRelatedException {
 		Account bankAccount = getBankAccount(bankAccountId);
 		bankAccount.removeAccount(cancelReason, cancelDate);
-		bankAccounts.remove(new BankAccountKey(bankAccountId));
+		bankAccounts.remove(new EntityKey(bankAccountId));
 		return bankAccount;
 	}
 	
@@ -77,7 +66,7 @@ public class Client implements HasPriority{
 		}
 		
 		long accountId = Math.abs(Bank.BANK_ACOUNT_ID_GENERATOR.nextLong());
-		BankAccountKey bankAccountKey = new BankAccountKey(accountId);
+		EntityKey bankAccountKey = new EntityKey(accountId);
 		Account account = new Account(this, bankAccountKey);
 		
 		bankAccounts.add(bankAccountKey, account);
@@ -89,14 +78,14 @@ public class Client implements HasPriority{
 			throw new NotEnoughSpaceException(MAX_NUMBER_ACCOUNTS);
 		}
 		
-		BankAccountKey bankAccountKey = bankAccount.getAccountKey();
+		EntityKey bankAccountKey = bankAccount.getAccountKey();
 		bankAccounts.add(bankAccountKey, bankAccount);
 		
 		return bankAccountKey.getAccountId();
 	}
 	
 	public Account getBankAccount(long bankAccountId) {
-		return bankAccounts.getValueOf(new BankAccountKey(bankAccountId));
+		return bankAccounts.getValueOf(new EntityKey(bankAccountId));
 	}
 	
 	public int numberOfBankAccounts() {
@@ -104,6 +93,17 @@ public class Client implements HasPriority{
 	}
 	
 	//GET SET EQUALS
+	public String getName() {
+		return name;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public LocalDate getRegistrationDate() {
+		return registrationDate;
+	}
 	
 	public int getPriority() {
 		return priority;
@@ -112,6 +112,9 @@ public class Client implements HasPriority{
 		this.priority = priority;
 	}
 	
+	public EntityKey getUserKey() {
+		return userKey;
+	}
 	public boolean equals(Client otherClient) {
 		return this.id.equals(otherClient.id);
 	}
