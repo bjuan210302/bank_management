@@ -65,10 +65,10 @@ public class SearchPaneController {
     @FXML
     void searchAction(ActionEvent event) {
     	try {
-    		String id = searchField.getText();
+    		long id = Long.parseLong(searchField.getText());
         	client = bank.searchClient(id);
         	nameField.setText(client.getName());
-        	idField.setText(client.getId());
+        	idField.setText(String.valueOf(client.getId()));
         	numberField.setText(String.valueOf(client.numberOfBankAccounts()));
         	dateField.setText(String.valueOf(client.getRegistrationDate()));
         	attendButton.setDisable(false);

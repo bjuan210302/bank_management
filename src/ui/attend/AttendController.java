@@ -139,7 +139,7 @@ public class AttendController {
     	attendWindow.show();
     	
     	nameField.setText(client.getName());
-    	idField.setText(client.getId());
+    	idField.setText(String.valueOf(client.getId()));
     	
 	}
 

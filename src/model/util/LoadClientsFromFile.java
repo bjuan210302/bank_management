@@ -39,7 +39,7 @@ public class LoadClientsFromFile {
 		
 		for(int i = 0; i < 100; i++) { //Both files have 100 lines. So, 100 clients.
 			String name = names.get((int) (Math.random()*100)) + " " + surnames.get((int) (Math.random()*100));
-			String id = String.valueOf(Math.abs(idGenerator.nextLong()));
+			long id = (Math.abs(idGenerator.nextLong()));
 			int priority = (int)(Math.random()*3);
 			Client client = new Client(name, id, LocalDate.now(), priority);
 			clients.add(client.getUserKey(), client);

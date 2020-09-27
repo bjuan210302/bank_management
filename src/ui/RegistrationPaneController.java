@@ -56,8 +56,8 @@ public class RegistrationPaneController {
     	}
 
     	else {
-
-    		bank.registerClient(name, id, priority);
+    		
+    		bank.registerClient(name, Long.parseLong(id), priority);
     		nameField.setText("");
     		idField.setText("");
     		pregnantCB.setSelected(false);
