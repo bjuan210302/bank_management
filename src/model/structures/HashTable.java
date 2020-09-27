@@ -29,6 +29,7 @@ public class HashTable<K extends Hashable, V> {
 	private Node<K, V>[] bucket;
 	private int size;
 	
+	@SuppressWarnings("unchecked")
 	public HashTable(int size){
 		this.size = size;
 		bucket = new Node[size];

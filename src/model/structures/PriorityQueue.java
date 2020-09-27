@@ -1,36 +1,35 @@
 package model.structures;
 
-public class PriorityQueue<T> implements QueueInterface<T>{
+import model.exceptions.NotEnoughSpaceException;
 
+public class PriorityQueue<T extends HasPriority> implements QueueInterface<T>{
+
+	private Heap<T> heap;
+	
 	@Override
-	public void enqueue(T element) {
-		// TODO Auto-generated method stub
-		
+	public void enqueue(T element) throws NotEnoughSpaceException {
+		if(!heap.add(element)) {
+			throw new NotEnoughSpaceException(heap.getMaxCapacity());
+		}
 	}
 
 	@Override
 	public T dequeue() {
-		// TODO Auto-generated method stub
-		return null;
+		return heap.removeTop();
 	}
 
 	@Override
 	public T peek() {
-		// TODO Auto-generated method stub
-		return null;
+		return heap.peek();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return heap.isEmpty();
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return heap.count();
 	}
-
-	
 }

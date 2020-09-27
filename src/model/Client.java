@@ -7,10 +7,11 @@ import java.util.NoSuchElementException;
 import model.exceptions.DebtRelatedException;
 import model.exceptions.NotEnoughMoneyException;
 import model.exceptions.NotEnoughSpaceException;
+import model.structures.HasPriority;
 import model.structures.HashTable;
 import model.structures.Stack;
 
-public class Client {
+public class Client implements HasPriority{
 
 	public static final int MAX_NUMBER_ACCOUNTS = 7; // Would a client need more than 7 bank accounts?
 	
@@ -72,10 +73,10 @@ public class Client {
 	
 	public long addBankAccount() throws NotEnoughSpaceException {
 		if(bankAccounts.isFull()) {
-			throw new NotEnoughSpaceException(MAX_NUMBER_ACCOUNTS, bankAccounts.count());
+			throw new NotEnoughSpaceException(MAX_NUMBER_ACCOUNTS);
 		}
 		
-		long accountId = Bank.BANK_ACOUNT_ID_GENERATOR.nextLong();
+		long accountId = Math.abs(Bank.BANK_ACOUNT_ID_GENERATOR.nextLong());
 		BankAccountKey bankAccountKey = new BankAccountKey(accountId);
 		Account account = new Account(this, bankAccountKey);
 		
@@ -85,7 +86,7 @@ public class Client {
 	}
 	public long addBankAccount(Account bankAccount) throws NotEnoughSpaceException {
 		if(bankAccounts.isFull()) {
-			throw new NotEnoughSpaceException(MAX_NUMBER_ACCOUNTS, bankAccounts.count());
+			throw new NotEnoughSpaceException(MAX_NUMBER_ACCOUNTS);
 		}
 		
 		BankAccountKey bankAccountKey = bankAccount.getAccountKey();

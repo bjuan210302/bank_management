@@ -67,7 +67,7 @@ public class Bank {
 		return foundClient;
 	}
 	
-	public void enqueueClient(Client client) {
+	public void enqueueClient(Client client) throws NotEnoughSpaceException {
 		
 		if(client.getPriority() > 0) {
 			queueSpecialAttention.enqueue(client);
