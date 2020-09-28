@@ -1,6 +1,7 @@
 package ui.attend;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -17,6 +18,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.*;
+import model.exceptions.DebtRelatedException;
+import model.exceptions.NotEnoughMoneyException;
 import model.exceptions.NotEnoughSpaceException;
 import ui.notifications.Notification;
 
@@ -24,6 +27,8 @@ public class AttendController {
 	
 	private Bank bank;
 	private Client client;
+	
+	
 	
 	public AttendController(Bank bank, Client client) {
 		this.bank = bank;
@@ -43,7 +48,7 @@ public class AttendController {
     }
     
     @FXML
-    private ChoiceBox<String> accountChoice;
+    private ChoiceBox<Long> accountChoice;
 
     @FXML
     private TextField moneyBox;
@@ -56,6 +61,10 @@ public class AttendController {
 
     @FXML
     private CheckBox payWithAccCheck;
+    
+    @FXML
+    private JFXButton cancellAllAccButton;
+
 
     @FXML
     private JFXButton payCardButton;
@@ -68,6 +77,10 @@ public class AttendController {
 
     @FXML
     private JFXButton undoButton;
+    
+
+    @FXML
+    private JFXButton searchAccButton;
 
 
     @FXML
@@ -84,9 +97,15 @@ public class AttendController {
 
     @FXML
     private Label cardBalField;
+    
+    @FXML
+    void cancelAllAccAct(ActionEvent event) {
+
+    }
 
     @FXML
     void cancelAccAct(ActionEvent event) {
+    	
 
     }
 
@@ -94,6 +113,7 @@ public class AttendController {
     void createAccAct(ActionEvent event) {
     	try {
 			client.addBankAccount();
+			actualizeChoiceBox();
 		} catch (NotEnoughSpaceException e) {
 			new Notification("Something went wrong!", "The client has reached the max of accounts", Notification.ERROR).show();
 		}
@@ -104,16 +124,56 @@ public class AttendController {
 
     @FXML
     void moneyButAct(ActionEvent event) {
+    	try {
+    		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
+        	int newBal = Integer.parseInt(moneyBox.getText());
+			client.depositOrWithdraw(newBal, temp.getAccountId());
+			accBalField.setText(String.valueOf(temp.getAccountBalance()));
+			moneyBox.setText("");
+		} catch (NotEnoughMoneyException e) {
+			new Notification("Something went wrong!", "This account has not enough money to do this action", Notification.ERROR).show();
+		} catch(NullPointerException e) {
+			new Notification("Something went wrong!", "Please select an account", Notification.ERROR).show();
+		} catch(NumberFormatException e) {
+			new Notification("Something went wrong!", "Please enter a valid value in the text box", Notification.ERROR).show();
+		}
 
     }
 
     @FXML
     void payCardButAct(ActionEvent event) {
 
+    	try {
+    		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
+        	int newBal = Integer.parseInt(payCardBox.getText());
+    		client.payCard(temp.getAccountId(), newBal, payWithAccCheck.isSelected());
+    		cardBalField.setText(String.valueOf(temp.getCardBalance()));
+    		payCardBox.setText("");
+    	} catch (NotEnoughMoneyException e) {
+    		new Notification("Something went wrong!", "This account has not enough money to do this action", Notification.ERROR).show();
+    	} catch (DebtRelatedException e) {
+    	 	new Notification("Something went wrong!", "This card has no debt", Notification.ERROR).show();	
+    	} catch(NullPointerException e) {
+			new Notification("Something went wrong!", "Please select an account", Notification.ERROR).show();
+		} catch(NumberFormatException e) {
+			new Notification("Something went wrong!", "Please enter a valid value in the text box", Notification.ERROR).show();
+		}
+
     }
 
     @FXML
     void undoAct(ActionEvent event) {
+    	try {
+    		client.undoLastAction().undo();
+    		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
+    		accIDField.setText(String.valueOf(temp.getAccountId()));
+    		accBalField.setText(String.valueOf(temp.getAccountBalance()));
+    		cardBalField.setText(String.valueOf(temp.getCardBalance()));
+    	}
+    	catch (NoSuchElementException e) {
+    		new Notification("Something went wrong!", "This account has not any actions left to undo", Notification.ERROR).show();
+		}
+    	
 
     }
 
@@ -140,7 +200,30 @@ public class AttendController {
     	
     	nameField.setText(client.getName());
     	idField.setText(String.valueOf(client.getId()));
+    	actualizeChoiceBox();
+    	accountChoice.getSelectionModel().select(0);
+    	
+    	
     	
 	}
+	
+
+    @FXML
+    public void searchAccAct(ActionEvent event) {
+    	Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
+    	accIDField.setText(String.valueOf((accountChoice.getSelectionModel().getSelectedItem())));
+    	accBalField.setText(String.valueOf(temp.getAccountBalance()));
+    	cardBalField.setText(String.valueOf(temp.getCardBalance()));
+
+    }
+    
+    public void actualizeChoiceBox() {
+    	accountChoice.getItems().setAll();
+    	for (Account account : client.getBankAccounts()) {
+			accountChoice.getItems().add(account.getAccountId());
+		}
+    	accountChoice.getSelectionModel().select(0);
+    	
+    }
 
 }

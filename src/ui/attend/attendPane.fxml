@@ -14,7 +14,7 @@
    <children>
       <Label layoutX="65.0" layoutY="45.0" text="Name:" />
       <Label layoutX="65.0" layoutY="80.0" text="ID:" />
-      <ChoiceBox fx:id="accountChoice" layoutX="65.0" layoutY="113.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="accountChoice" layoutX="65.0" layoutY="113.0" prefHeight="31.0" prefWidth="166.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="382.0" layoutX="65.0" layoutY="174.0" stroke="BLACK" strokeType="INSIDE" width="604.0" />
       <Label layoutX="380.0" layoutY="45.0" text="Account ID:" />
       <Label layoutX="380.0" layoutY="80.0" text="Account Balance:" />
@@ -39,7 +39,7 @@
       </JFXButton>
       <JFXButton fx:id="createAccButton" layoutX="92.0" layoutY="495.0" onAction="#createAccAct" prefHeight="47.0" prefWidth="125.0" style="-fx-background-color: #d5dce8;" text="Create Account" />
       <JFXButton fx:id="undoButton" layoutX="241.0" layoutY="495.0" onAction="#undoAct" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Undo" />
-      <JFXButton layoutX="335.0" layoutY="495.0" prefHeight="47.0" prefWidth="166.0" style="-fx-background-color: #e8204b;" text="Cancel all accounts">
+      <JFXButton fx:id="cancellAllAccButton" layoutX="335.0" layoutY="495.0" onAction="#cancelAllAccAct" prefHeight="47.0" prefWidth="166.0" style="-fx-background-color: #e8204b;" text="Cancel all accounts">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -70,5 +70,6 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
+      <JFXButton fx:id="searchAccButton" layoutX="234.0" layoutY="113.0" onAction="#searchAccAct" prefHeight="31.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Select" />
    </children>
 </Pane>

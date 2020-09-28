@@ -1,19 +1,13 @@
 package ui;
 
-import java.io.IOException;
+
 
 import com.jfoenix.controls.JFXButton;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.*;
 import ui.attend.AttendController;
 import ui.notifications.Notification;
@@ -76,6 +70,10 @@ public class SearchPaneController {
     	}
     	catch (NullPointerException npe) {
     		new Notification("Something went wrong!", "The id is not registered", Notification.ERROR).show();
+    		searchField.setText("");
+		} catch (NumberFormatException e) {
+			new Notification("Something went wrong!", "Please enter a valid value", Notification.ERROR).show();
+			searchField.setText("");
 		}
     	
 
