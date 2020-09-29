@@ -7,11 +7,10 @@ import java.util.NoSuchElementException;
 import model.exceptions.DebtRelatedException;
 import model.exceptions.NotEnoughMoneyException;
 import model.exceptions.NotEnoughSpaceException;
-import model.structures.HasPriority;
 import model.structures.HashTable;
 import model.structures.Stack;
 
-public class Client implements HasPriority{
+public class Client implements Comparable<Client>{
 
 	public static final int MAX_NUMBER_ACCOUNTS = 7; // Would a client need more than 7 bank accounts?
 	
@@ -51,6 +50,11 @@ public class Client implements HasPriority{
 		bankAccount.removeAccount(cancelReason, cancelDate);
 		bankAccounts.remove(new EntityKey(bankAccountId));
 		return bankAccount;
+	}
+	public void removeAllBankAccounts(String cancelReason, LocalDate cancelDate) throws DebtRelatedException {
+		for(Account acc: bankAccounts.toArrayList()) {
+			removeBankAccount(acc.getAccountId(), cancelReason, cancelDate);
+		}
 	}
 	
 	public Action undoLastAction() throws NoSuchElementException{
@@ -124,6 +128,10 @@ public class Client implements HasPriority{
 		return bankAccounts.toArrayList();
 	}
 	
+	@Override
+	public int compareTo(Client otherClient) {
+		return this.priority - otherClient.getPriority();
+	}
 	
 	
 	//TEST ONLY FUNCTIONS

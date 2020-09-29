@@ -2,7 +2,7 @@ package model.structures;
 
 import model.exceptions.NotEnoughSpaceException;
 
-public class PriorityQueue<T extends HasPriority> implements QueueInterface<T>{
+public class PriorityQueue<T extends Comparable<T>> implements QueueInterface<T>{
 
 	private Heap<T> heap;
 	

@@ -57,20 +57,24 @@ public class Bank {
 	
 	// CLIENTS FUNCTIONS
 	
-	public void depositOrWithdraw(Client client, long bankAccountId, int amount) throws NotEnoughMoneyException {
+	public void depositOrWithdraw(long clientId, long bankAccountId, int amount) throws NotEnoughMoneyException {
+		Client client = searchClient(clientId);
 		client.depositOrWithdraw(amount, bankAccountId);
 	}
 	
-	public void payCard(Client client, long bankAccountId, int amountToPay, boolean payWithAccountMoney) throws NotEnoughMoneyException, DebtRelatedException {
+	public void payCard(long clientId, long bankAccountId, int amountToPay, boolean payWithAccountMoney) throws NotEnoughMoneyException, DebtRelatedException {
+		Client client = searchClient(clientId);
 		client.payCard(bankAccountId, amountToPay, payWithAccountMoney);
 	}
 	
-	public void removeAccount(Client client, long bankAccountId, String cancelReason, LocalDate cancelDate) throws DebtRelatedException {
-		Account removedBankAccount = client.removeBankAccount(bankAccountId, cancelReason, cancelDate);
+	public void removeAccount(long clientId, long bankAccountId, String cancelReason) throws DebtRelatedException {
+		Client client = searchClient(clientId);
+		Account removedBankAccount = client.removeBankAccount(bankAccountId, cancelReason, LocalDate.now());
 		formerBankAccounts.add(removedBankAccount);
 	}
 	
-	public void undoLastAction(Client client) throws NotEnoughSpaceException {
+	public void undoLastAction(long clientId) throws NotEnoughSpaceException {
+		Client client = searchClient(clientId);
 		Action action = client.undoLastAction();
 		action.undo();
 		if(action.getTag().equals(ActionTag.TAG_REMOVE_ACC)) {
@@ -79,13 +83,32 @@ public class Bank {
 		}
 	}
 	
-	public void addBankAccount(Client client) throws NotEnoughSpaceException {
+	public void addBankAccount(long clientId) throws NotEnoughSpaceException {
+		Client client = searchClient(clientId);
 		client.addBankAccount();
 	}
-	public int numberOfBankAccounts(Client client) {
-		return client.numberOfBankAccounts();
-	}
 	
+	//AUX Functions
+	public int numberOfBankAccountsOf(long clientId) {
+		return searchClient(clientId).numberOfBankAccounts();
+	}
+	public int balanceOf(long clientId, long bankAccountId) {
+		Client client = searchClient(clientId);
+		return client.getBankAccount(bankAccountId).getAccountBalance();
+	}
+	public int cardBalanceOf(long clientId, long bankAccountId) {
+		Client client = searchClient(clientId);
+		return client.getBankAccount(bankAccountId).getCardBalance();
+	}
+	public String nameOf(long clientId) {
+		return searchClient(clientId).getName();
+	}
+	public LocalDate registrationDateOf(long clientId) {
+		return searchClient(clientId).getRegistrationDate();
+	}
+	public ArrayList<Account> bankAccountsOf(long clientId){
+		return searchClient(clientId).getBankAccounts();
+	}
 	//GET SET
 	
 	public ArrayList<Client> getDatabase(){

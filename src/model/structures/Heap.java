@@ -2,7 +2,7 @@ package model.structures;
 
 import java.lang.reflect.Array;
 
-public class Heap<T extends HasPriority> {
+public class Heap<T extends Comparable<T>> {
 
 	private T[] list;
 	private int heapSize;
@@ -26,10 +26,10 @@ public class Heap<T extends HasPriority> {
 	private void heapifyAdd (int newNodeIndex){
 		int parent = (newNodeIndex - 1) / 2;
 		if (parent != newNodeIndex) {
-	        if (list[newNodeIndex].getPriority() > list[parent].getPriority()) { 
+	        if (list[newNodeIndex].compareTo(list[parent]) > 0) { 
 	            swap(parent, newNodeIndex); 
 	            heapifyAdd(parent); 
-	        } 
+	        }
 	    } 
 	 }
 
@@ -56,11 +56,11 @@ public class Heap<T extends HasPriority> {
         int right = 2 * i + 2;
   
         // If left child is larger than root 
-        if (left < heapSize && list[left] != null && list[left].getPriority() > list[largest].getPriority()) {
+        if (left < heapSize && list[left] != null && list[left].compareTo(list[largest]) > 0) {
             largest = left; 
         }
         // If right child is larger than largest
-        if (right < heapSize && list[right] != null && list[right].getPriority() > list[largest].getPriority()) {
+        if (right < heapSize && list[right] != null && list[right].compareTo(list[largest]) > 0) {
             largest = right; 
         }
         
@@ -91,24 +91,24 @@ public class Heap<T extends HasPriority> {
 			return true;
 		}
 		
-		boolean leftIsOk = false;
-		boolean rightIsOk = false;
+		boolean leftIsTrue = false;
+		boolean rightIsTrue = false;
 		
 		// checking left
 		if(left >= heapSize) {
-			leftIsOk = true;
-		}else if(list[left].getPriority() <= list[parent].getPriority()) {
-			leftIsOk = true;
+			leftIsTrue = true;
+		}else if(list[left].compareTo(list[parent]) <= 0) {
+			leftIsTrue = true;
 		}
 		
-		// checking right just if left is ok
+		// checking right just if left is true
 		if(right >= heapSize) {
-			rightIsOk = true;
-		}else if(leftIsOk && (list[right].getPriority() <= list[parent].getPriority()) ) {
-			rightIsOk = true;
+			rightIsTrue = true;
+		}else if(leftIsTrue && (list[right].compareTo(list[parent]) <= 0) ) {
+			rightIsTrue = true;
 		}
 		
-		return leftIsOk && rightIsOk && isHeap(left) && isHeap(right);
+		return leftIsTrue && rightIsTrue && isHeap(left) && isHeap(right);
 	}
 	
 	public boolean isEmpty() {
@@ -122,15 +122,5 @@ public class Heap<T extends HasPriority> {
 	}
 	public T[] getList() {
 		return list;
-	}
-	
-	//For tests only
-	public String toString() {
-		String msg = "";
-		for(T t: list) {
-			msg += (t == null) ? "-":t.getPriority();
-			msg += " ";
-		}
-		return msg;
 	}
 }

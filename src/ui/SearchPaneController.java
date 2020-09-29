@@ -8,15 +8,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import model.*;
+import model.Bank;
 import ui.attend.AttendController;
 import ui.notifications.Notification;
 
 public class SearchPaneController {
 	
 	private Bank bank;
-	
-	private Client client = null;
 	
 	public SearchPaneController(Bank bank) {
 		this.bank = bank;
@@ -45,7 +43,7 @@ public class SearchPaneController {
 
     @FXML
     void attendAction(ActionEvent event) {
-    	AttendController attendController = new AttendController(bank, client);
+    	AttendController attendController = new AttendController(bank, Long.parseLong(searchField.getText()));
     	attendController.attendWindow();
     	nameField.setText("");
     	idField.setText("");
@@ -59,12 +57,11 @@ public class SearchPaneController {
     @FXML
     void searchAction(ActionEvent event) {
     	try {
-    		long id = Long.parseLong(searchField.getText());
-        	client = bank.searchClient(id);
-        	nameField.setText(client.getName());
-        	idField.setText(String.valueOf(client.getId()));
-        	numberField.setText(String.valueOf(client.numberOfBankAccounts()));
-        	dateField.setText(String.valueOf(client.getRegistrationDate()));
+    		long clientId = Long.parseLong(searchField.getText());
+        	nameField.setText(bank.nameOf(clientId));
+        	idField.setText(String.valueOf(clientId));
+        	numberField.setText(String.valueOf(bank.numberOfBankAccountsOf(clientId)));
+        	dateField.setText(String.valueOf(bank.registrationDateOf(clientId)));
         	attendButton.setDisable(false);
         	
     	}

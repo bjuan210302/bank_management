@@ -1,7 +1,6 @@
 package ui.attend;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 import com.jfoenix.controls.JFXButton;
@@ -19,7 +18,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.*;
+import model.Account;
+import model.Bank;
 import model.exceptions.DebtRelatedException;
 import model.exceptions.NotEnoughMoneyException;
 import model.exceptions.NotEnoughSpaceException;
@@ -28,13 +28,11 @@ import ui.notifications.Notification;
 public class AttendController {
 	
 	private Bank bank;
-	private Client client;
+	private long clientId;
 	
-	
-	
-	public AttendController(Bank bank, Client client) {
+	public AttendController(Bank bank, long clientId) {
 		this.bank = bank;
-		this.client = client;
+		this.clientId = clientId;
 	}
 	@FXML
     private JFXButton finishButton;
@@ -128,7 +126,7 @@ public class AttendController {
     public void cancelAccAct(ActionEvent event) {
     	String cancelReason = cancelAccField.getText();
     	try {
-			client.removeBankAccount(Long.parseLong(accIDField.getText()), cancelReason, LocalDate.now());
+    		bank.removeAccount(clientId, Long.parseLong(accIDField.getText()), cancelReason);
 			cancelAccField.setText("");
 			actualizeChoiceBox();
 			accIDField.setText("");
@@ -149,7 +147,7 @@ public class AttendController {
     @FXML
     public void createAccAct(ActionEvent event) {
     	try {
-			client.addBankAccount();
+			bank.addBankAccount(clientId);
 			actualizeChoiceBox();
 		} catch (NotEnoughSpaceException e) {
 			new Notification("Something went wrong!", "The client has reached the max of accounts", Notification.ERROR).show();
@@ -162,10 +160,10 @@ public class AttendController {
     @FXML
     public void moneyButAct(ActionEvent event) {
     	try {
-    		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
         	int newBal = Integer.parseInt(moneyBox.getText());
-			client.depositOrWithdraw(newBal, temp.getAccountId());
-			accBalField.setText(String.valueOf(temp.getAccountBalance()));
+        	long bankAccountId = accountChoice.getSelectionModel().getSelectedItem();
+			bank.depositOrWithdraw(clientId, bankAccountId, newBal);
+			accBalField.setText(String.valueOf(bank.balanceOf(newBal, bankAccountId)));
 			moneyBox.setText("");
 		} catch (NotEnoughMoneyException e) {
 			new Notification("Something went wrong!", "This account has not enough money to do this action", Notification.ERROR).show();
@@ -181,10 +179,10 @@ public class AttendController {
     public void payCardButAct(ActionEvent event) {
 
     	try {
-    		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
-        	int newBal = Integer.parseInt(payCardBox.getText());
-    		client.payCard(temp.getAccountId(), newBal, payWithAccCheck.isSelected());
-    		cardBalField.setText(String.valueOf(temp.getCardBalance()));
+    		long bankAccountId = accountChoice.getSelectionModel().getSelectedItem();
+    		int amountToPay = Integer.parseInt(payCardBox.getText());
+    		bank.payCard(clientId, bankAccountId, amountToPay, payWithAccCheck.isSelected());
+    		cardBalField.setText(String.valueOf(bank.cardBalanceOf(clientId, bankAccountId)));
     		payCardBox.setText("");
     	} catch (NotEnoughMoneyException e) {
     		new Notification("Something went wrong!", "This account has not enough money to do this action", Notification.ERROR).show();
@@ -201,14 +199,16 @@ public class AttendController {
     @FXML
     public void undoAct(ActionEvent event) {
     	try {
-    		client.undoLastAction().undo();
-    		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
-    		accIDField.setText(String.valueOf(temp.getAccountId()));
-    		accBalField.setText(String.valueOf(temp.getAccountBalance()));
-    		cardBalField.setText(String.valueOf(temp.getCardBalance()));
+    		bank.undoLastAction(clientId);
+    		long bankAccountId = accountChoice.getSelectionModel().getSelectedItem();
+    		accIDField.setText(String.valueOf(bankAccountId));
+    		accBalField.setText(String.valueOf(bank.balanceOf(clientId, bankAccountId)));
+    		cardBalField.setText(String.valueOf(bank.cardBalanceOf(clientId, bankAccountId)));
     	}
     	catch (NoSuchElementException e) {
     		new Notification("Something went wrong!", "This account has not any actions left to undo", Notification.ERROR).show();
+		} catch (NotEnoughSpaceException e) {
+			new Notification("Something went wrong!", "The previous action tried to add an account, but there's no space", Notification.ERROR).show();
 		}
     	
 
@@ -235,8 +235,8 @@ public class AttendController {
     	
     	attendWindow.show();
     	
-    	nameField.setText(client.getName());
-    	idField.setText(String.valueOf(client.getId()));
+    	nameField.setText(bank.nameOf(clientId));
+    	idField.setText(String.valueOf(clientId));
     	actualizeChoiceBox();
     	accountChoice.getSelectionModel().select(0);
     	
@@ -267,10 +267,10 @@ public class AttendController {
     @FXML
     public void searchAccAct(ActionEvent event) {
     	try {
-    		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
-    		accIDField.setText(String.valueOf((accountChoice.getSelectionModel().getSelectedItem())));
-    		accBalField.setText(String.valueOf(temp.getAccountBalance()));
-    		cardBalField.setText(String.valueOf(temp.getCardBalance()));
+    		long bankAccountId = accountChoice.getSelectionModel().getSelectedItem();
+    		accIDField.setText(String.valueOf(bankAccountId));
+    		accBalField.setText(String.valueOf(bank.balanceOf(clientId, bankAccountId)));
+    		cardBalField.setText(String.valueOf(bank.cardBalanceOf(clientId, bankAccountId)));
     	}
     	catch(NullPointerException e) {
     		new Notification("Something went wrong!", "Select or create an account", Notification.ERROR).show();
@@ -280,7 +280,7 @@ public class AttendController {
     
     public void actualizeChoiceBox() {
     	accountChoice.getItems().setAll();
-    	for (Account account : client.getBankAccounts()) {
+    	for (Account account : bank.bankAccountsOf(clientId)) {
 			accountChoice.getItems().add(account.getAccountId());
 		}
     	accountChoice.getSelectionModel().select(0);

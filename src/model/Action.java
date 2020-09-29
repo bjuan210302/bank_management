@@ -2,6 +2,8 @@ package model;
 
 import java.time.LocalDate;
 
+import model.exceptions.NotEnoughSpaceException;
+
 public class Action {
 	
 	private ActionTag actionTag;
@@ -24,7 +26,7 @@ public class Action {
 		this.cardPaymentDate = bankAccount.getCardPaymentDate();
 	}
 	
-	public void undo() {
+	public void undo() throws NotEnoughSpaceException {
 		bankAccount.setAccountBalance(accountBalance);
 		bankAccount.setCardBalance(cardBalance);
 		bankAccount.setCardPaymentDate(cardPaymentDate);
@@ -32,6 +34,7 @@ public class Action {
 		if(actionTag.equals(ActionTag.TAG_REMOVE_ACC)) {
 			bankAccount.setCancelReason(null);
 			bankAccount.setCancelDate(null);
+			performer.addBankAccount(bankAccount);
 		}
 	}
 	

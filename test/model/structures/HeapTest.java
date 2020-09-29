@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class HeapTest {
 
-	class Node implements HasPriority{
+	class Node implements Comparable<Node>{
 
 		int val;
 		
@@ -15,13 +15,17 @@ class HeapTest {
 			this.val = val;
 		}
 		
-		@Override
 		public int getPriority() {
 			return val;
 		}
 		
 		public String toString() {
 			return String.valueOf(val);
+		}
+
+		@Override
+		public int compareTo(Node otherNode) {
+			return val - otherNode.getPriority();
 		}
 	}
 	

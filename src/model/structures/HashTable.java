@@ -2,8 +2,6 @@ package model.structures;
 
 import java.util.ArrayList;
 
-import model.Client;
-
 public class HashTable<K extends Hashable, V> {
 
 	class Node<K2, V2>{
