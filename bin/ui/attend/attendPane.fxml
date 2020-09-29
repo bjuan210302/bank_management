@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
@@ -22,17 +23,17 @@
       <Line endX="129.0" layoutX="238.0" layoutY="289.0" rotate="90.0" startX="-100.0" />
       <Line endX="129.0" layoutX="442.0" layoutY="289.0" rotate="90.0" startX="-100.0" />
       <Line endX="510.0" layoutX="159.0" layoutY="404.0" startX="-94.0" />
-      <TextField fx:id="moneyBox" layoutX="89.0" layoutY="228.0" prefHeight="31.0" prefWidth="132.0" />
+      <TextField fx:id="moneyBox" layoutX="89.0" layoutY="254.0" prefHeight="31.0" prefWidth="132.0" />
       <JFXButton fx:id="moneyButton" layoutX="118.0" layoutY="305.0" onAction="#moneyButAct" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Send" />
       <Label layoutX="68.0" layoutY="383.0" text="Note: enter a negative value to withdraw">
          <font>
             <Font name="System Bold Italic" size="9.0" />
          </font>
       </Label>
-      <TextField fx:id="payCardBox" layoutX="293.0" layoutY="199.0" prefHeight="31.0" prefWidth="132.0" />
-      <CheckBox fx:id="payWithAccCheck" layoutX="293.0" layoutY="248.0" mnemonicParsing="false" text="Pay with account $" />
-      <JFXButton fx:id="payCardButton" layoutX="325.0" layoutY="305.0" onAction="#payCardButAct" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Send" />
-      <JFXButton fx:id="cancelAccButton" layoutX="493.0" layoutY="229.0" onAction="#cancelAccAct" prefHeight="105.0" prefWidth="132.0" style="-fx-background-color: #e8204b;" text="Cancel Account">
+      <TextField fx:id="payCardBox" layoutX="293.0" layoutY="229.0" prefHeight="31.0" prefWidth="132.0" />
+      <CheckBox fx:id="payWithAccCheck" layoutX="291.0" layoutY="279.0" mnemonicParsing="false" text="Pay with account $" />
+      <JFXButton fx:id="payCardButton" layoutX="325.0" layoutY="318.0" onAction="#payCardButAct" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Send" />
+      <JFXButton fx:id="cancelAccButton" layoutX="493.0" layoutY="318.0" onAction="#cancelAccAct" prefHeight="47.0" prefWidth="132.0" style="-fx-background-color: #e8204b;" text="Cancel Account">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -71,5 +72,26 @@
          </font>
       </Label>
       <JFXButton fx:id="searchAccButton" layoutX="234.0" layoutY="113.0" onAction="#searchAccAct" prefHeight="31.0" prefWidth="68.0" style="-fx-background-color: #d5dce8;" text="Select" />
+      <Label layoutX="92.0" layoutY="194.0" prefHeight="21.0" prefWidth="196.0" text="Consignment or ">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="92.0" layoutY="215.0" text="withdrawal">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="299.0" layoutY="194.0" text="Payment of  card">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="cancelAccField" layoutX="466.0" layoutY="215.0" prefHeight="90.0" prefWidth="186.0" />
+      <Label layoutX="469.0" layoutY="184.0" text="Cancelation reason">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

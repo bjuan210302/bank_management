@@ -1,6 +1,7 @@
 package ui.attend;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 import com.jfoenix.controls.JFXButton;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -39,6 +41,9 @@ public class AttendController {
 	
 	@FXML
 	Stage attendWindow;
+	
+	@FXML
+	Stage cancelWindow;
 
     @FXML
     void finishAction(ActionEvent event) {
@@ -99,18 +104,50 @@ public class AttendController {
     private Label cardBalField;
     
     @FXML
-    void cancelAllAccAct(ActionEvent event) {
+    private TextArea cancAllReason;
+    
+    @FXML
+    private TextArea cancelAccField;
+
+    @FXML
+    private JFXButton sendCancButton;
+
+    @FXML
+    public void sendCancAct(ActionEvent event) {
+    	cancelWindow.close();
+
+    }
+    
+    @FXML
+    public void cancelAllAccAct(ActionEvent event) {
+    	cancelWindow.show();
 
     }
 
     @FXML
-    void cancelAccAct(ActionEvent event) {
+    public void cancelAccAct(ActionEvent event) {
+    	String cancelReason = cancelAccField.getText();
+    	try {
+			client.removeBankAccount(Long.parseLong(accIDField.getText()), cancelReason, LocalDate.now());
+			cancelAccField.setText("");
+			actualizeChoiceBox();
+			accIDField.setText("");
+			accBalField.setText("");
+			cardBalField.setText("");
+			
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DebtRelatedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
 
     }
 
     @FXML
-    void createAccAct(ActionEvent event) {
+    public void createAccAct(ActionEvent event) {
     	try {
 			client.addBankAccount();
 			actualizeChoiceBox();
@@ -123,7 +160,7 @@ public class AttendController {
 
 
     @FXML
-    void moneyButAct(ActionEvent event) {
+    public void moneyButAct(ActionEvent event) {
     	try {
     		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
         	int newBal = Integer.parseInt(moneyBox.getText());
@@ -141,7 +178,7 @@ public class AttendController {
     }
 
     @FXML
-    void payCardButAct(ActionEvent event) {
+    public void payCardButAct(ActionEvent event) {
 
     	try {
     		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
@@ -162,7 +199,7 @@ public class AttendController {
     }
 
     @FXML
-    void undoAct(ActionEvent event) {
+    public void undoAct(ActionEvent event) {
     	try {
     		client.undoLastAction().undo();
     		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
@@ -203,6 +240,25 @@ public class AttendController {
     	actualizeChoiceBox();
     	accountChoice.getSelectionModel().select(0);
     	
+    	FXMLLoader cancelLoader = new FXMLLoader(getClass().getResource("cancelationPane.fxml"));
+    	cancelLoader.setController(this);
+    	Pane cancelPane = null;
+    	try {
+			cancelPane = cancelLoader.load();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+    	
+    	Scene cancelScene = new Scene(cancelPane);
+    	
+    	cancelWindow = new Stage();
+    	cancelWindow.setScene(cancelScene);
+    	cancelWindow.setResizable(false);
+    	cancelWindow.initModality(Modality.APPLICATION_MODAL);
+    	cancelWindow.initStyle(StageStyle.UNDECORATED);
+    	
+    	
     	
     	
 	}
@@ -210,10 +266,15 @@ public class AttendController {
 
     @FXML
     public void searchAccAct(ActionEvent event) {
-    	Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
-    	accIDField.setText(String.valueOf((accountChoice.getSelectionModel().getSelectedItem())));
-    	accBalField.setText(String.valueOf(temp.getAccountBalance()));
-    	cardBalField.setText(String.valueOf(temp.getCardBalance()));
+    	try {
+    		Account temp = client.getBankAccount(accountChoice.getSelectionModel().getSelectedItem());
+    		accIDField.setText(String.valueOf((accountChoice.getSelectionModel().getSelectedItem())));
+    		accBalField.setText(String.valueOf(temp.getAccountBalance()));
+    		cardBalField.setText(String.valueOf(temp.getCardBalance()));
+    	}
+    	catch(NullPointerException e) {
+    		new Notification("Something went wrong!", "Select or create an account", Notification.ERROR).show();
+    	}
 
     }
     
