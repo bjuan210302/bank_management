@@ -2,6 +2,7 @@ package ui;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -56,9 +57,14 @@ public class DataBasePaneController implements Initializable{
     void sortAct(ActionEvent event) {
 		ArrayList<Client> aux = new ArrayList<>();
 		if(sortChoice.getSelectionModel().getSelectedItem().equals("Name")) {
-			Comparable [] temp = Array2ArrayList.toArray(bank.getDatabase());
-			temp = Sort.bubbleSort(temp);
-			aux = Array2ArrayList.toArraylist(temp);
+			aux = (ArrayList<Client>) Sort.bubbleSort(aux, new Comparator<Client>() {
+
+				@Override
+				public int compare(Client o1, Client o2) {
+					// TODO Auto-generated method stub
+					return 0;
+				}
+			});
 			actualizeTV(aux);
 		}
 		

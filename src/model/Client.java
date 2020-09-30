@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 import model.exceptions.DebtRelatedException;
 import model.exceptions.NotEnoughMoneyException;
@@ -128,6 +129,13 @@ public class Client implements Comparable<Client>{
 	
 	public ArrayList<Account> getBankAccounts(){
 		return bankAccounts.toArrayList();
+	}
+	public int getTotalMoney() {
+		int money = 0;
+		for(Account acc: bankAccounts.toArrayList()) {
+			money += acc.getAccountBalance();
+		}
+		return money;
 	}
 	
 	@Override

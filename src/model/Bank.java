@@ -137,6 +137,9 @@ public class Bank {
 	public ArrayList<Account> bankAccountsOf(long clientId){
 		return searchClient(clientId).getBankAccounts();
 	}
+	public int getTotalMoneyOf(long clientId) {
+		return searchClient(clientId).getTotalMoney();
+	}
 	//GET SET
 	
 	public ArrayList<Client> getDatabase(){
