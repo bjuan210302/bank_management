@@ -1,5 +1,6 @@
 package model.structures;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Queue<T> implements QueueInterface<T>{
@@ -30,4 +31,7 @@ public class Queue<T> implements QueueInterface<T>{
 		return elements.size();
 	}
 	
+	public ArrayList<T> toArrayList(){
+		return new ArrayList<T>(elements);
+	}
 }

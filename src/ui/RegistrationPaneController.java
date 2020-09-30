@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import model.*;
+import model.exceptions.NotEnoughSpaceException;
 import ui.notifications.Notification;
 
 public class RegistrationPaneController {
@@ -37,7 +38,7 @@ public class RegistrationPaneController {
     private Button registerButton;
 
     @FXML
-    public void registerButtonAct(ActionEvent event) {
+    public void registerButtonAct(ActionEvent event) throws NumberFormatException, NotEnoughSpaceException {
     	String name = nameField.getText();
     	String id = idField.getText();
     	int[] priority =  new int[3];

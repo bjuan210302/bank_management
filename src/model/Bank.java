@@ -30,7 +30,7 @@ public class Bank {
 		queueSpecialAttention = new PriorityQueue<Client>();
 	}
 	
-	public void registerClient(String name, long id, int[] specialAttentionPoints) {
+	public void registerClient(String name, long id, int[] specialAttentionPoints) throws NotEnoughSpaceException {
 		
 		int priority = 0;
 		for(int i = 0; i < specialAttentionPoints.length; i++) {
@@ -39,13 +39,14 @@ public class Bank {
 		
 		Client client = new Client(name, id, LocalDate.now(), priority);
 		databaseClients.add(client.getUserKey(), client);
+		enqueueClient(client);
 	}
 	
 	public Client searchClient(long id) {
 		return databaseClients.getValueOf(new EntityKey(id));
 	}
 	
-	public void enqueueClient(Client client) throws NotEnoughSpaceException {
+	private void enqueueClient(Client client) throws NotEnoughSpaceException {
 		
 		if(client.getPriority() > 0) {
 			queueSpecialAttention.enqueue(client);
@@ -53,6 +54,13 @@ public class Bank {
 			queueClients.enqueue(client);
 		}
 		
+	}
+	
+	public long normalDequeue() {
+		return queueClients.dequeue().getId();
+	}
+	public long specialAttentionDequeue() {
+		return queueSpecialAttention.dequeue().getId();
 	}
 	
 	// CLIENTS FUNCTIONS
