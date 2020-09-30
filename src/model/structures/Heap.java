@@ -40,7 +40,7 @@ public class Heap<T extends Comparable<T>> {
 			list[heapSize-1] = null;
 			list[0] = last;
 			heapSize--;
-			heapifyRemove(0);
+			heapify(0);
 			return top;
 		}else if(heapSize == 1) {
 			T top = list[0];
@@ -50,7 +50,7 @@ public class Heap<T extends Comparable<T>> {
 		return null;
 	}
 	
-	private void heapifyRemove(int i) {
+	private void heapify(int i) {
 		int largest = i;
         int left = 2 * i + 1;
         int right = 2 * i + 2;
@@ -67,7 +67,7 @@ public class Heap<T extends Comparable<T>> {
         // If largest is not root 
         if (largest != i) { 
             swap(i, largest);
-            heapifyRemove(largest); 
+            heapify(largest); 
         }
 	}
 	

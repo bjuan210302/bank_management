@@ -7,7 +7,8 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="lib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="E:/Eclipse workspace/bank_management/data/libraries/jfoenix-8.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Juan/Documents/ws/eclipse_ws/bank_management/lib/jfoenix-8.0.8.jar" sourcepath="lib/jfoenix-8.0.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

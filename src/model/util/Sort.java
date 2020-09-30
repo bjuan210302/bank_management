@@ -1,110 +1,120 @@
 package model.util;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 public class Sort {
 	
-	@SuppressWarnings("rawtypes")
-	public static Comparable[] heapSort(Comparable[] arr) {
-		int n = arr.length; 
+	public static<T> List<T> heapSort(List<T> arr, Comparator<T> c) {
+		int n = arr.size(); 
 		  
         // Build heap (rearrange array) 
         for (int i = n / 2 - 1; i >= 0; i--) 
-        	heapify(arr, n, i); 
+        	heapify(arr, n, i, c); 
   
         // One by one extract an element from heap 
-        for (int i=n-1; i>0; i--) 
+        for (int i = n-1; i > 0; i--) 
         { 
             // Move current root to end 
-            Comparable temp = arr[0]; 
-            arr[0] = arr[i]; 
-            arr[i] = temp; 
+            T temp = arr.get(0); 
+            arr.set(0, arr.get(i));
+            arr.set(i, temp);
   
             // call max heapify on the reduced heap 
-            heapify(arr, i, 0); 
+            heapify(arr, i, 0, c); 
         } 
         
 		return arr;
 	}
-	@SuppressWarnings({ "unused", "unchecked", "rawtypes" })
-	private static void heapify(Comparable arr[], int heapSize, int i) {
+	
+	private static<T> void heapify(List<T> arr, int heapSize, int i, Comparator<T> c) {
 		int largest = i;
         int left = 2 * i + 1;
         int right = 2 * i + 2;
   
         // If left child is larger than root 
-        if (left < heapSize && arr[left] != null && arr[left].compareTo(arr[largest]) > 0) {
+        if (left < heapSize && arr.get(left) != null && c.compare(arr.get(left), arr.get(largest)) > 0) {
             largest = left; 
         }
         // If right child is larger than largest
-        if (right < heapSize && arr[right] != null && arr[right].compareTo(arr[largest]) > 0) {
+        if (right < heapSize && arr.get(right) != null && c.compare(arr.get(right), arr.get(largest)) > 0) {
             largest = right; 
         }
         
         // If largest is not root 
         if (largest != i) { 
-        	Comparable swap = arr[i]; 
-            arr[i] = arr[largest]; 
-            arr[largest] = swap; 
-            heapify(arr, heapSize, largest); 
+        	T swap = arr.get(i); 
+        	arr.set(i, arr.get(largest));
+            arr.set(largest, swap);
+            heapify(arr, heapSize, largest, c); 
         }
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public static Comparable[] mergeSort(Comparable[] arr, int n) {
+	public static<T> List<T> mergeSort(List<T> arr, int n, Comparator<T> c) {
 		if (n < 2) {
 	        return arr;
 	    }
 	    int mid = n / 2;
-	    Comparable[] l = new Comparable[mid];
-	    Comparable[] r = new Comparable[n - mid];
+	    ArrayList<T> l = new ArrayList<T>();
+	    ensureSize(l, mid);
+	    ArrayList<T> r = new ArrayList<T>();
+	    ensureSize(r, n-mid);
 	 
 	    for (int i = 0; i < mid; i++) {
-	        l[i] = arr[i];
+	    	l.set(i, arr.get(i));
 	    }
 	    for (int i = mid; i < n; i++) {
-	        r[i - mid] = arr[i];
+	    	r.set(i-mid, arr.get(i));
 	    }
-	    mergeSort(l, mid);
-	    mergeSort(r, n - mid);
+	    
+	    mergeSort(l, mid, c);
+	    mergeSort(r, n - mid, c);
 	 
-		return merge(arr, l, r, mid, n - mid);
+		return merge(arr, l, r, mid, n - mid, c);
 	}
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static Comparable[] merge(Comparable[] a, Comparable[] l, Comparable[] r, int left, int right) {
+	private static<T> List<T> merge(List<T> a, List<T> l, List<T> r, int left, int right, Comparator<T> c) {
 		int i = 0, j = 0, k = 0;
+		
 		while (i < left && j < right) {
-	        if (l[i].compareTo(r[j]) <= 0) {
-	            a[k++] = l[i++];
+	        if (c.compare(l.get(i), r.get(j)) <= 0) {
+	        	a.set(k++, l.get(i++));
 	        }
 	        else {
-	            a[k++] = r[j++];
+	        	a.set(k++, r.get(j++));
 	        }
 	    }
 		
 		while (i < left) {
-	        a[k++] = l[i++];
+			a.set(k++, l.get(i++));
 	    }
 	    while (j < right) {
-	        a[k++] = r[j++];
+	    	a.set(k++, r.get(j++));
 	    }
 	    
 	    return a;
 	}
+	private static void ensureSize(ArrayList<?> list, int size) {
+	    list.ensureCapacity(size);
+	    while (list.size() < size) {
+	        list.add(null);
+	    }
+	}
 	
-	public static <T extends Comparable<T>>  T[] quickSort(T[] arr) {
+	public static<T>  List<T> quickSort(List<T> arr, Comparator<T> c) {
 		return arr;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Comparable[] bubbleSort(Comparable[] arr) {
+	public static<T> List<T> bubbleSort(List<T> arr, Comparator<T> c) {
 		boolean sorted = false;
-	    Comparable temp;
+	    T temp;
 	    while (!sorted) {
 	        sorted = true;
-	        for (int i = 0; i < arr.length - 1; i++) {
-	            if (arr[i].compareTo(arr[i+1]) > 0) {
-	                temp = arr[i];
-	                arr[i] = arr[i+1];
-	                arr[i+1] = temp;
+	        for (int i = 0; i < arr.size() - 1; i++) {
+	            if (c.compare(arr.get(i), arr.get(i+1)) > 0) {
+	                temp = arr.get(i);
+	                arr.set(i, arr.get(i+1));
+	                arr.set(i+1, temp);
 	                sorted = false;
 	            }
 	        }

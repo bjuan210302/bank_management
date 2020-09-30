@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="43.0" layoutY="22.0" text="Enter the reason of cancelation">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="cancAllReason" layoutX="43.0" layoutY="47.0" prefHeight="80.0" prefWidth="355.0" />
+      <JFXButton fx:id="sendCancButton" layoutX="194.0" layoutY="141.0" onAction="#sendCancAct" style="-fx-background-color: #d5dce8;" text="Send" />
+   </children>
+</Pane>
