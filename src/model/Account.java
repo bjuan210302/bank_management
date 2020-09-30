@@ -73,7 +73,7 @@ public class Account {
 		this.accountBalance = 0; // The money is returned to the client
 		this.cardBalance = 0;
 		
-		Action action = createAction(ActionTag.TAG_CARDPAYMENT);
+		Action action = createAction(ActionTag.TAG_REMOVE_ACC);
 		owner.addAction(action);
 	}
 	

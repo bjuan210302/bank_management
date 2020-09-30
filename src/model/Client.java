@@ -51,10 +51,12 @@ public class Client implements Comparable<Client>{
 		bankAccounts.remove(new EntityKey(bankAccountId));
 		return bankAccount;
 	}
-	public void removeAllBankAccounts(String cancelReason, LocalDate cancelDate) throws DebtRelatedException {
+	public ArrayList<Account> removeAllBankAccounts(String cancelReason, LocalDate cancelDate) throws DebtRelatedException {
+		ArrayList<Account> aux = new ArrayList<>();
 		for(Account acc: bankAccounts.toArrayList()) {
-			removeBankAccount(acc.getAccountId(), cancelReason, cancelDate);
+			aux.add(removeBankAccount(acc.getAccountId(), cancelReason, cancelDate));
 		}
+		return aux;
 	}
 	
 	public Action undoLastAction() throws NoSuchElementException{

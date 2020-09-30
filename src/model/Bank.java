@@ -56,6 +56,10 @@ public class Bank {
 		
 	}
 	
+	public Client getFrontQueue() {
+		return queueClients.peek();
+	}
+	
 	public long normalDequeue() {
 		return queueClients.dequeue().getId();
 	}
@@ -64,6 +68,8 @@ public class Bank {
 	}
 	
 	// CLIENTS FUNCTIONS
+	
+	
 	
 	public void depositOrWithdraw(long clientId, long bankAccountId, int amount) throws NotEnoughMoneyException {
 		Client client = searchClient(clientId);
@@ -81,12 +87,17 @@ public class Bank {
 		formerBankAccounts.add(removedBankAccount);
 	}
 	
+	public void removeAllAccounts(long clientId, String cancelReason) throws DebtRelatedException {
+		Client client = searchClient(clientId);
+		formerBankAccounts.addAll(client.removeAllBankAccounts(cancelReason, LocalDate.now()));
+	}
+	
 	public void undoLastAction(long clientId) throws NotEnoughSpaceException {
 		Client client = searchClient(clientId);
 		Action action = client.undoLastAction();
 		action.undo();
 		if(action.getTag().equals(ActionTag.TAG_REMOVE_ACC)) {
-			client.addBankAccount(action.getBankAccount());
+			//client.addBankAccount(action.getBankAccount());
 			formerBankAccounts.remove(action.getBankAccount());
 		}
 	}
@@ -121,6 +132,10 @@ public class Bank {
 	
 	public ArrayList<Client> getDatabase(){
 		return databaseClients.toArrayList();
+	}
+	
+	public ArrayList<Client> getQueue(){
+		return queueClients.toArrayList();
 	}
 	//TEST ONLY FUNCTIONS
 	public void loadUsers() {

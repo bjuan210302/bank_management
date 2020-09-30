@@ -112,6 +112,17 @@ public class AttendController {
 
     @FXML
     public void sendCancAct(ActionEvent event) {
+    	String cancelReason = cancAllReason.getText();
+    	try {
+			bank.removeAllAccounts(clientId, cancelReason);
+			actualizeChoiceBox();
+			accIDField.setText("");
+			accBalField.setText("");
+			cardBalField.setText("");
+		} catch (DebtRelatedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	cancelWindow.close();
 
     }
@@ -163,12 +174,13 @@ public class AttendController {
         	int newBal = Integer.parseInt(moneyBox.getText());
         	long bankAccountId = accountChoice.getSelectionModel().getSelectedItem();
 			bank.depositOrWithdraw(clientId, bankAccountId, newBal);
-			accBalField.setText(String.valueOf(bank.balanceOf(newBal, bankAccountId)));
+			accBalField.setText(String.valueOf(bank.balanceOf(clientId, bankAccountId)));
 			moneyBox.setText("");
 		} catch (NotEnoughMoneyException e) {
 			new Notification("Something went wrong!", "This account has not enough money to do this action", Notification.ERROR).show();
 		} catch(NullPointerException e) {
 			new Notification("Something went wrong!", "Please select an account", Notification.ERROR).show();
+			e.printStackTrace();
 		} catch(NumberFormatException e) {
 			new Notification("Something went wrong!", "Please enter a valid value in the text box", Notification.ERROR).show();
 		}
@@ -200,16 +212,14 @@ public class AttendController {
     public void undoAct(ActionEvent event) {
     	try {
     		bank.undoLastAction(clientId);
-    		long bankAccountId = accountChoice.getSelectionModel().getSelectedItem();
-    		accIDField.setText(String.valueOf(bankAccountId));
-    		accBalField.setText(String.valueOf(bank.balanceOf(clientId, bankAccountId)));
-    		cardBalField.setText(String.valueOf(bank.cardBalanceOf(clientId, bankAccountId)));
+    		actualizeChoiceBox();
+    		
     	}
     	catch (NoSuchElementException e) {
     		new Notification("Something went wrong!", "This account has not any actions left to undo", Notification.ERROR).show();
 		} catch (NotEnoughSpaceException e) {
 			new Notification("Something went wrong!", "The previous action tried to add an account, but there's no space", Notification.ERROR).show();
-		}
+		} 
     	
 
     }

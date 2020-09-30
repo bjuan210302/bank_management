@@ -30,7 +30,6 @@ public class Action {
 		bankAccount.setAccountBalance(accountBalance);
 		bankAccount.setCardBalance(cardBalance);
 		bankAccount.setCardPaymentDate(cardPaymentDate);
-		
 		if(actionTag.equals(ActionTag.TAG_REMOVE_ACC)) {
 			bankAccount.setCancelReason(null);
 			bankAccount.setCancelDate(null);

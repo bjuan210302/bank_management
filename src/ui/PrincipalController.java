@@ -19,6 +19,8 @@ public class PrincipalController {
 	private DataBasePaneController dbController;
 	
 	private SearchPaneController searchController;
+	
+	private QueueController qController;
 
     @FXML
     private JFXButton registerButton;
@@ -42,6 +44,9 @@ public class PrincipalController {
     private Pane secondPane;
     
     @FXML
+    private Pane thirdPane;
+    
+    @FXML
     private Pane fourthPane;
     
     public PrincipalController() {
@@ -61,6 +66,9 @@ public class PrincipalController {
 
     @FXML
     public void queueButtonAct(ActionEvent event) {
+    	paneChange.getChildren().clear();
+    	paneChange.getChildren().add(thirdPane);
+    	qController.initializeTV();
 
     }
 
@@ -84,6 +92,8 @@ public class PrincipalController {
     	regPane = new RegistrationPaneController(bank);
 		dbController = new DataBasePaneController(bank);
 		searchController = new SearchPaneController(bank);
+		qController = new QueueController(bank);
+		
 		bank.loadUsers();
     	
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("registerPane.fxml"));
@@ -108,6 +118,14 @@ public class PrincipalController {
 		fxmlLoader.setController(searchController);
 		try {
 			fourthPane = fxmlLoader.load();
+		} catch (IOException e) {
+			
+		}
+		
+		fxmlLoader = new FXMLLoader(getClass().getResource("queuePane.fxml"));
+		fxmlLoader.setController(qController);
+		try {
+			thirdPane = fxmlLoader.load();
 		} catch (IOException e) {
 			
 		}

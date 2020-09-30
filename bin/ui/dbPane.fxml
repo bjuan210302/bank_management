@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="tableDB" layoutX="23.0" layoutY="14.0" prefHeight="571.0" prefWidth="687.0">
+      <TableView fx:id="tableDB" layoutX="23.0" layoutY="14.0" prefHeight="489.0" prefWidth="687.0">
         <columns>
           <TableColumn fx:id="nameColumn" prefWidth="142.0" text="Name" />
           <TableColumn fx:id="idColumn" prefWidth="165.0" text="ID" />
@@ -14,5 +18,12 @@
             <TableColumn fx:id="moneyColumn" prefWidth="160.0" text="Money" />
         </columns>
       </TableView>
+      <Label layoutX="59.0" layoutY="531.0" text="Sort by:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="sortChoice" layoutX="131.0" layoutY="529.0" prefHeight="31.0" prefWidth="181.0" />
+      <JFXButton fx:id="sortButton" layoutX="334.0" layoutY="529.0" onAction="#sortAct" prefHeight="31.0" prefWidth="57.0" style="-fx-background-color: #d5dce8;" text="Sort" />
    </children>
 </Pane>
