@@ -1,10 +1,17 @@
 package model.structures;
 
+import java.util.ArrayList;
+
 import model.exceptions.NotEnoughSpaceException;
 
 public class PriorityQueue<T extends Comparable<T>> implements QueueInterface<T>{
 
 	private Heap<T> heap;
+	
+	@SuppressWarnings("unchecked")
+	public PriorityQueue(Class somt, int size) {
+		heap = new Heap<T>(somt, size);
+	}
 	
 	@Override
 	public void enqueue(T element) throws NotEnoughSpaceException {
@@ -32,4 +39,8 @@ public class PriorityQueue<T extends Comparable<T>> implements QueueInterface<T>
 	public int size() {
 		return heap.count();
 	}
+	
+	
+	
+	
 }

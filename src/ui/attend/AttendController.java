@@ -120,8 +120,7 @@ public class AttendController {
 			accBalField.setText("");
 			cardBalField.setText("");
 		} catch (DebtRelatedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Notification("Something went wrong!", "You cannot cancel a count with debts", Notification.ERROR).show();
 		}
     	cancelWindow.close();
 
@@ -145,11 +144,9 @@ public class AttendController {
 			cardBalField.setText("");
 			
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Notification("Something went wrong!", "Please select an account", Notification.ERROR).show();
 		} catch (DebtRelatedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Notification("Something went wrong!", "You cannot cancel a count with debts", Notification.ERROR).show();
 		}
     	
 
@@ -213,6 +210,9 @@ public class AttendController {
     	try {
     		bank.undoLastAction(clientId);
     		actualizeChoiceBox();
+    		accIDField.setText("");
+    		accBalField.setText("");
+    		cardBalField.setText("");
     		
     	}
     	catch (NoSuchElementException e) {

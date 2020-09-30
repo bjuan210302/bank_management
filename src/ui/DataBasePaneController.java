@@ -49,6 +49,7 @@ public class DataBasePaneController implements Initializable{
 	
 	public DataBasePaneController(Bank bank) {
 		this.bank = bank;
+		
 	}
 	
 	@FXML
@@ -84,6 +85,10 @@ public class DataBasePaneController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		sortChoice.getItems().add("Name");
+		sortChoice.getItems().add("ID");
+		sortChoice.getItems().add("Time of vinculation");
+		sortChoice.getItems().add("Money");
 		
 		
 		
@@ -102,10 +107,6 @@ public class DataBasePaneController implements Initializable{
 		idColumn.setSortable(false);
 		timeColumn.setSortable(false);
 		moneyColumn.setSortable(false);
-		sortChoice.getItems().add("Name");
-		sortChoice.getItems().add("ID");
-		sortChoice.getItems().add("Time of vinculation");
-		sortChoice.getItems().add("Money");
 		
 	}
 	

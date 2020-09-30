@@ -27,7 +27,7 @@ public class Bank {
 		formerBankAccounts = new ArrayList<Account>();
 		databaseClients = new HashTable<EntityKey, Client>(MAX_NUMBER_CLIENTS);
 		queueClients = new Queue<Client>();
-		queueSpecialAttention = new PriorityQueue<Client>();
+		queueSpecialAttention = new PriorityQueue<Client>(Client.class, 100);
 	}
 	
 	public void registerClient(String name, long id, int[] specialAttentionPoints) throws NotEnoughSpaceException {
@@ -57,7 +57,14 @@ public class Bank {
 	}
 	
 	public Client getFrontQueue() {
-		return queueClients.peek();
+		Client aux;
+		if(queueSpecialAttention.peek()!= null) {
+			aux = queueSpecialAttention.dequeue();
+		}
+		else {
+			aux = queueClients.dequeue();
+		}
+		return aux;
 	}
 	
 	public long normalDequeue() {
@@ -66,6 +73,8 @@ public class Bank {
 	public long specialAttentionDequeue() {
 		return queueSpecialAttention.dequeue().getId();
 	}
+	
+	
 	
 	// CLIENTS FUNCTIONS
 	
@@ -136,6 +145,14 @@ public class Bank {
 	
 	public ArrayList<Client> getQueue(){
 		return queueClients.toArrayList();
+	}
+
+	public ArrayList<Client> getClientMaxPriority() {
+		ArrayList<Client> aux = new ArrayList<>();
+		if(queueSpecialAttention.peek()!=null) {
+			aux.add(queueSpecialAttention.peek());
+		}
+		return aux;
 	}
 	//TEST ONLY FUNCTIONS
 	public void loadUsers() {

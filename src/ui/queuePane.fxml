@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
-
+<?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="queueTB" layoutX="98.0" layoutY="40.0" prefHeight="439.0" prefWidth="284.0">
+      <TableView fx:id="queueTB" layoutX="58.0" layoutY="54.0" prefHeight="439.0" prefWidth="284.0">
         <columns>
           <TableColumn fx:id="nameColumn" prefWidth="150.0" text="Name" />
           <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="133.0" text="ID" />
         </columns>
       </TableView>
-      <JFXButton fx:id="attendButton" layoutX="208.0" layoutY="513.0" onAction="#attendAct" style="-fx-background-color: #d5dce8;" text="Attend Next" />
+      <JFXButton fx:id="attendButton" layoutX="314.0" layoutY="511.0" onAction="#attendAct" style="-fx-background-color: #d5dce8;" text="Attend Next" />
+      <Label layoutX="142.0" layoutY="22.0" text="Normal Queue">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <TableView fx:id="priorityQueueTB" layoutX="398.0" layoutY="54.0" prefHeight="439.0" prefWidth="284.0">
+         <columns>
+            <TableColumn fx:id="namePQColumn" prefWidth="150.0" text="Name" />
+            <TableColumn fx:id="idPQColumn" minWidth="0.0" prefWidth="133.0" text="ID" />
+         </columns>
+      </TableView>
+      <Label layoutX="482.0" layoutY="22.0" text="Priority Queue">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

@@ -32,6 +32,10 @@ public class Queue<T> implements QueueInterface<T>{
 	}
 	
 	public ArrayList<T> toArrayList(){
-		return new ArrayList<T>(elements);
+		ArrayList<T> arr = new ArrayList<>();
+		for (int i = elements.size()-1; i >= 0 ; i--) {
+			arr.add(elements.get(i));
+		}
+		return arr;
 	}
 }

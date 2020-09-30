@@ -1,6 +1,7 @@
 package ui;
 
 import java.net.URL;
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.*;
 import ui.attend.AttendController;
+import ui.notifications.Notification;
 
 public class QueueController implements Initializable{
 	
@@ -32,16 +34,32 @@ public class QueueController implements Initializable{
 
     @FXML
     private TableColumn<Client, Long> idColumn;
+    
+    @FXML
+    private TableView<Client> priorityQueueTB;
+
+    @FXML
+    private TableColumn<Client, String> namePQColumn;
+
+    @FXML
+    private TableColumn<Client, Long> idPQColumn;
+
 
     @FXML
     private JFXButton attendButton;
 
     @FXML
     public void attendAct(ActionEvent event) {
-    	AttendController attendController = new AttendController(bank, bank.getFrontQueue().getId());
-    	attendController.attendWindow();
-    	bank.normalDequeue();
-    	actualizeTV();
+    	try {
+    		AttendController attendController = new AttendController(bank, bank.getFrontQueue().getId());
+    		attendController.attendWindow();
+    		
+    		actualizeNormalTV();
+    		actualizePTV();
+    	}
+    	catch(NoSuchElementException e) {
+    		new Notification("Something went wrong!", "There is nobody left in the queue", Notification.ERROR).show();
+    	}
 
     }
 
@@ -53,15 +71,34 @@ public class QueueController implements Initializable{
 	
 	public void initializeTV() {
 		ObservableList<Client> data = FXCollections.observableArrayList(bank.getQueue());
+		ObservableList<Client> data2 = FXCollections.observableArrayList(bank.getClientMaxPriority());
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 		
+		namePQColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		idPQColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+		
+		
+		
 		queueTB.getItems().setAll(data);
+		priorityQueueTB.getItems().setAll(data2);
+		
+		nameColumn.setSortable(false);
+		idColumn.setSortable(false);
+		namePQColumn.setSortable(false);
+		idPQColumn.setSortable(false);
 	}
 	
-	public void actualizeTV() {
+	public void actualizeNormalTV() {
 		ObservableList<Client> data = FXCollections.observableArrayList(bank.getQueue());
 		queueTB.getItems().setAll(data);
+	}
+
+	public void actualizePTV() {
+
+		ObservableList<Client> data = FXCollections.observableArrayList(bank.getClientMaxPriority());
+		priorityQueueTB.getItems().setAll(data);
+
 	}
 
 
