@@ -99,7 +99,15 @@ public class DataBasePaneController implements Initializable{
 		}
 		
 		else if(sortChoice.getSelectionModel().getSelectedItem().equals("Money")) {
-			
+			aux = (ArrayList<Client>) Sort.quickSort(bank.getDatabase(), 0, bank.getDatabase().size()-1, new Comparator<Client>() {
+
+				@Override
+				public int compare(Client o1, Client o2) {
+					return Double.compare(o2.getTotalMoney(), o1.getTotalMoney());
+				}
+				
+			});
+			actualizeTV(aux);
 		}
 
     }

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Sort {
+import javax.naming.PartialResultException;
+
+public class Sort<T> {
 	
 	public static<T> List<T> heapSort(List<T> arr, Comparator<T> c) {
 		int n = arr.size(); 
@@ -101,8 +103,33 @@ public class Sort {
 	    }
 	}
 	
-	public static<T>  List<T> quickSort(List<T> arr, Comparator<T> c) {
+	public static<T>  List<T> quickSort(List<T> arr, int low, int high, Comparator<T> c) {
+		if(low<high) {
+			int pi = partition(arr, low, high, c);
+			
+			quickSort(arr, low, pi -1, c);
+			quickSort(arr, pi+1, high, c);
+		}
 		return arr;
+	}
+	
+	private static<T> int partition(List<T> arr, int low, int high, Comparator<T> c) {
+		T pivot = arr.get(high);
+		int i = (low-1);
+		for (int j = low; j < high; j++) {
+			if(c.compare(arr.get(j), pivot)<0) {
+				i++;
+				T temp = arr.get(i);
+				arr.set(i, arr.get(j));
+				arr.set(j, temp);
+			}
+		}
+		
+		T temp = arr.get(i+1);
+		arr.set(i+1, arr.get(high));
+		arr.set(high, temp);
+		
+		return i+1;
 	}
 	
 	public static<T> List<T> bubbleSort(List<T> arr, Comparator<T> c) {

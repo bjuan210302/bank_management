@@ -68,5 +68,16 @@ class SortTest {
 			assertTrue(actual.get(i) == expected.get(i));
 		}
 	}
+	
+	@Test
+	void quickSortTest() {
+		setup();
+		actual = (ArrayList<Integer>) Sort.quickSort(actual, 0, actual.size()-1, c);
+		
+		for(int i = 0; i < actual.size(); i++) {
+			assertTrue(actual.get(i) == expected.get(i));
+		}
+	}
+	
 
 }
