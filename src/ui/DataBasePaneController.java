@@ -18,7 +18,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Bank;
 import model.Client;
-import model.util.Array2ArrayList;
 import model.util.Sort;
 
 public class DataBasePaneController implements Initializable{
@@ -91,7 +90,7 @@ public class DataBasePaneController implements Initializable{
 
 				@Override
 				public int compare(Client o1, Client o2) {
-					return o2.getRegistrationDate().compareTo(o1.getRegistrationDate());
+					return o1.getRegistrationDate().compareTo(o2.getRegistrationDate());
 				}
 				
 			});
@@ -103,7 +102,7 @@ public class DataBasePaneController implements Initializable{
 
 				@Override
 				public int compare(Client o1, Client o2) {
-					return Double.compare(o2.getTotalMoney(), o1.getTotalMoney());
+					return Double.compare(o1.getTotalMoney(), o2.getTotalMoney());
 				}
 				
 			});

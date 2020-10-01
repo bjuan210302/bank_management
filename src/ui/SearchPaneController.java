@@ -15,6 +15,7 @@ import ui.notifications.Notification;
 public class SearchPaneController {
 	
 	private Bank bank;
+	private AttendController attendController;
 	
 	public SearchPaneController(Bank bank) {
 		this.bank = bank;
@@ -43,7 +44,7 @@ public class SearchPaneController {
 
     @FXML
     void attendAction(ActionEvent event) {
-    	AttendController attendController = new AttendController(bank, Long.parseLong(searchField.getText()));
+    	attendController = new AttendController(bank, Long.parseLong(searchField.getText()));
     	attendController.attendWindow();
     	nameField.setText("");
     	idField.setText("");

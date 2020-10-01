@@ -94,7 +94,7 @@ public class PrincipalController {
 		searchController = new SearchPaneController(bank);
 		qController = new QueueController(bank);
 		
-		bank.loadUsers();
+		//bank.loadUsers(); //This line is to load users to test the database tableview
     	
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("registerPane.fxml"));
 		fxmlLoader.setController(regPane);

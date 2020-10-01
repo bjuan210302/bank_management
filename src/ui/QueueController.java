@@ -22,6 +22,8 @@ public class QueueController implements Initializable{
 	
 	private Bank bank;
 	
+	private AttendController attendController;
+	
 	public QueueController(Bank bank) {
 		this.bank = bank;
 	}
@@ -51,7 +53,7 @@ public class QueueController implements Initializable{
     @FXML
     public void attendAct(ActionEvent event) {
     	try {
-    		AttendController attendController = new AttendController(bank, bank.getFrontQueue().getId());
+    		attendController = new AttendController(bank, bank.getFrontQueue().getId());
     		attendController.attendWindow();
     		
     		actualizeNormalTV();
