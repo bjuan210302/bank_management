@@ -57,28 +57,44 @@ public class DataBasePaneController implements Initializable{
     void sortAct(ActionEvent event) {
 		ArrayList<Client> aux = new ArrayList<>();
 		if(sortChoice.getSelectionModel().getSelectedItem().equals("Name")) {
-			aux = (ArrayList<Client>) Sort.bubbleSort(aux, new Comparator<Client>() {
+			aux = (ArrayList<Client>) Sort.bubbleSort(bank.getDatabase(), new Comparator<Client>() {
 
 				@Override
 				public int compare(Client o1, Client o2) {
-					// TODO Auto-generated method stub
-					return 0;
+					return o1.getName().compareTo(o2.getName());
 				}
 			});
 			actualizeTV(aux);
 		}
 		
 		else if(sortChoice.getSelectionModel().getSelectedItem().equals("ID")) {
-			Comparable [] temp = Array2ArrayList.toArray(bank.getDatabase());
-			temp = Sort.heapSort(temp);
-			aux = Array2ArrayList.toArraylist(temp);
+			aux = (ArrayList<Client>)Sort.heapSort(bank.getDatabase(), new Comparator<Client>() {
+
+				@Override
+				public int compare(Client o1, Client o2) {
+					int result = 0;
+					if(o1.getId()-o2.getId()<0) {
+						result = -1;
+					}
+					else if(o1.getId()-o2.getId()>0) {
+						result = 1;
+					}
+					return result;
+				}
+				
+			});
 			actualizeTV(aux);
 		}
 		
 		else if(sortChoice.getSelectionModel().getSelectedItem().equals("Time of vinculation")) {
-			Comparable [] temp = Array2ArrayList.toArray(bank.getDatabase());
-			temp = Sort.mergeSort(temp, temp.length);
-			aux = Array2ArrayList.toArraylist(temp);
+			aux = (ArrayList<Client>) Sort.mergeSort(bank.getDatabase(), bank.getDatabase().size(), new Comparator<Client>() {
+
+				@Override
+				public int compare(Client o1, Client o2) {
+					return o2.getRegistrationDate().compareTo(o1.getRegistrationDate());
+				}
+				
+			});
 			actualizeTV(aux);
 		}
 		
@@ -106,6 +122,7 @@ public class DataBasePaneController implements Initializable{
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 		timeColumn.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
+		moneyColumn.setCellValueFactory(new PropertyValueFactory<>("totalMoney"));
 
 		tableDB.getItems().setAll(data);
 		
